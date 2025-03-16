@@ -7,9 +7,9 @@ function App() {
 
   return (
     <>
-    <div className="w-fit">
-
       <Navbar />
+    <div className="max-w-fit">
+
       <Home />
     </div>
    
