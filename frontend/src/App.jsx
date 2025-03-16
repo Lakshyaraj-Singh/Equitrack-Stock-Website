@@ -7,8 +7,11 @@ function App() {
 
   return (
     <>
+    <div className="w-fit">
+
       <Navbar />
       <Home />
+    </div>
    
     </>
   )

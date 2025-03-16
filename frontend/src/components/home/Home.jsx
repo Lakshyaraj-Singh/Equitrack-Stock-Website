@@ -1,9 +1,14 @@
 import React from 'react'
-import { Hero } from './hero'
+import { HeroImg } from './HeroImg'
+import { CallAction } from '../CallAction'
+import{Trust} from './Trust'
 export const Home = () => {
   return (<>
-    <div>Home</div>
-    <Hero/>
+    <div className='mt-20  '>
+    <HeroImg/>
+    <CallAction />
+    <Trust/>
+    </div>
   </>
   )
 }
