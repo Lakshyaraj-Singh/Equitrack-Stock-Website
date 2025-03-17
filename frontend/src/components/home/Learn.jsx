@@ -13,6 +13,8 @@ export const Learn = () => {
         <div className='h-60  hover:shadow-lg hover: shadow-cyan-500/50   transition-all duration-200 w-80 rounded  bg-base-200 flex gap-3 flex-col justify-center items-center'><img src="\commody_icon.webp" alt="" srcset=""  style={{width:"40%"}}/><p>IPOs</p></div>
         <div className='h-60 hover:shadow-lg hover: shadow-cyan-500/50  transition-all duration-200  w-80 rounded bg-base-200  flex gap-3 flex-col justify-center items-center'><img src="\ipos_icon.webp" alt="" srcset="" style={{width:"40%"}} /><p>Currencies</p></div>
      </div>
+     
     </div>
+  
   )
 } 

@@ -15,7 +15,7 @@ export const Home = () => {
     <Learn/>
     <HeroLeft/>
     <Video/>
-    <Footer/>
+  
     </div>
   </>
   )
