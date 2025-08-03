@@ -1,21 +1,38 @@
-const express= require("express");
-const app=express()
-const Dotenv=require("dotenv")
-Dotenv.config()
-const PORT=process.env.PORT || "3004"
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
+import {User} from "./Models/User.js"
+import userRouter from "./Routes/User.js"
+const app=express();    
+dotenv.config();
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true,
+  };
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));  
 
-let url=process.env.MONGO
-const mongoose = require('mongoose');
-const main=(url)=>{
 
-    mongoose.connect(url)
-    .then((r)=>console.log("connected"))
-    .catch((err)=>console.log(err))
-}
-main(url)
+//Defining Routes
+app.use("/api/user",userRouter)
 
-app.listen(PORT,()=>{
-    console.log(`Listening to ${PORT}`)
-   
-  
-})
+const PORT = process.env.PORT || "3004";
+const url = process.env.MONGO;
+
+const main = async (url) => {
+  try {
+    await mongoose.connect(url);
+    console.log("connected");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+main(url);
+
+app.listen(PORT, () => {
+  console.log(`Listening to ${PORT}`);
+});
+
