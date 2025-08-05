@@ -1,0 +1,21 @@
+# Frontend patterns
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# Backend patterns  
+backend/node_modules/
+backend/.env
+backend/build/
+backend/dist/
+backend/__pycache__/
+backend/venv/
+
+# Or use wildcards to cover both
+**/node_modules/
+**/build/
+**/dist/
+**/.env
+**/.env.local

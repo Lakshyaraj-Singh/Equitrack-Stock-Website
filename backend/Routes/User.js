@@ -5,7 +5,7 @@ const router=Router({mergeParams:true});
 router.post("/register",usercontroller.registerUser)
 //router.put("/update/:id")
 //router.get("/user/:id")
-//router.post("/login")
+router.post("/login",usercontroller.loginUser)
 
 
 
