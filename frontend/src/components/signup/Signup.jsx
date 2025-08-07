@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import { SignupValidation } from './Vaildations';
 import { useNavigate } from 'react-router-dom';
+import { register } from '../../USERAPIS/Uapi';
 
 export const Signup = () => {
   const navigate=useNavigate();
@@ -11,9 +12,15 @@ export const Signup = () => {
       password: '',
     },
     validate:SignupValidation,
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
       console.log('Form submitted:', values);
-      
+      let res=await register(values);
+      if(res.status==200){
+        console.log("Hurray!!1")
+      }
+      else{
+        console.log(res)
+      }
     },
   });
 
