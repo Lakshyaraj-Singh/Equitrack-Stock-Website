@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { watchlist } from "../src/data/data"
+import { watchlist } from "../../data/data"
 import { Tooltip,Grow,Fade } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import EjectIcon from '@mui/icons-material/Eject';

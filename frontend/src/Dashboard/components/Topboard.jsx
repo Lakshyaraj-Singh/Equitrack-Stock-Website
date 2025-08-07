@@ -1,4 +1,4 @@
-import { watchlist } from "../data/data"
+import { watchlist } from "../../data/data"
 import { Menu } from "./Menu"
 
 export const Topboard = () => {

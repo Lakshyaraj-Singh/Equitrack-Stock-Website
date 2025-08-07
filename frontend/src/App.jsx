@@ -1,8 +1,10 @@
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar"
-import { Home } from "./components/home/Home"
+import { Home } from "./components/home/Home";
+import{HomeDash} from "./Dashboard/components/HomeDash"
 import { About } from "./components/about/About"
-import { Routes, Route } from 'react-router-dom';
+
+
 import { Product } from "./components/products/Product";
 import { Pricing } from "./components/pricing/Pricing";
 import { Support } from "./components/support/Support";
@@ -10,6 +12,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
 import { Signup } from "./components/signup/Signup";
 import { Login } from "./components/signup/Login";
+import { Dashboard } from "./Dashboard/components/Dashboard";
+import{Summary} from "./Dashboard/components/Summary";
+import{Positions} from "./Dashboard/components/Positions";
+import{Holdings} from "./Dashboard/components/Holdings";
+import{Funds} from "./Dashboard/components/Funds";
+import { Orders } from "./Dashboard/components/Orders";
 function App() {
   const router = createBrowserRouter([
     {
@@ -18,7 +26,7 @@ function App() {
       errorElement: <h1>Page Not Found</h1>,
       children: ([
         {
-          path: "/",
+          index:true,
           element: <Home />,
         },
         {
@@ -48,6 +56,39 @@ function App() {
           element:<Login />
         }
       ])
+    },
+    {
+      path:"/dashboard",
+      element:<HomeDash/>,
+      children:([
+        { path:"",
+          element:<Dashboard/>,
+          children:([
+            {
+              index:true,
+           
+              element:<Summary/>,
+            
+            },
+            {
+              path:"orders",
+              element:<Orders/>
+            },
+            {
+              path:"holdings",
+              element:<Holdings/>
+            },
+            {
+              path:"positions",
+              element:<Positions/>
+            },
+            {
+              path:"funds",
+              element:<Funds/>
+            }
+          ])
+        }
+      ])
     }
   ])
 
@@ -57,3 +98,4 @@ function App() {
 }
 
 export default App
+

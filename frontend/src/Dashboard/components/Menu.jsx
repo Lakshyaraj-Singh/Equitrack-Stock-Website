@@ -2,11 +2,11 @@ import { Link } from "react-router-dom"
 
 export const Menu = () => {
     const navLinks=(<>
-     <li><Link to="/" >Dashboard</Link></li>
-     <li><Link to="/orders" >Orders</Link></li>
-     <li><Link to="/holdings" >Holdings</Link></li>
-     <li><Link to="/positions" >Positions</Link></li>
-     <li><Link to="/funds" >Funds</Link></li>
+     <li><Link to="/dashboard" >Dashboard</Link></li>
+     <li><Link to="/dashboard/orders" >Orders</Link></li>
+     <li><Link to="/dashboard/holdings" >Holdings</Link></li>
+     <li><Link to="/dashboard/positions" >Positions</Link></li>
+     <li><Link to="/dashboard/funds" >Funds</Link></li>
      <li className="bg-"><Link to="/logout" >Logout</Link></li>
         
     </>)

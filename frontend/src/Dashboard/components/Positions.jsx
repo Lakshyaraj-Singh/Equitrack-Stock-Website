@@ -1,4 +1,4 @@
-import { positions } from "../src/data/data";
+import { positions } from "../../data/data";
 
 export const Positions = () => {
   return (

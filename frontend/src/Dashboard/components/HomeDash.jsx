@@ -1,11 +1,13 @@
 import {Topboard} from "./Topboard"
 import {Dashboard} from "./Dashboard"
-export const Home = () => {
+import { Outlet } from "react-router-dom"
+export const HomeDash = () => {
   return (
     <div>
      
       <Topboard/>
-      <Dashboard/>
+      
+      <Outlet/>
     </div>
   )
 }

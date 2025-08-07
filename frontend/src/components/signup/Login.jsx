@@ -1,19 +1,27 @@
 import { useFormik } from 'formik';
 import { loginValidation } from './Vaildations';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../USERAPIS/Uapi';
 
 export const Login = () => {
   const navigate=useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
-      username: '',
-      password: '',
+      password: ''
     },
     validate:loginValidation,
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
       console.log('Form submitted:', values);
-      
+      let res=await login(values);
+      if(res.status==200){
+        navigate("/dashboard");
+        console.log(res)
+
+      }
+      else{
+        console.log(res)
+      }
     },
   });
 

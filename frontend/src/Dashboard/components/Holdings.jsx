@@ -1,4 +1,4 @@
-import { holdings } from "../src/data/data"
+import { holdings } from "../../data/data"
 
 export const Holdings = () => {
   return (
