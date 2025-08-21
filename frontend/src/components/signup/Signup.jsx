@@ -17,6 +17,7 @@ export const Signup = () => {
       let res=await register(values);
       if(res.status==200){
         console.log("Hurray!!1")
+        navigate('/login');
       }
       else{
         console.log(res)
