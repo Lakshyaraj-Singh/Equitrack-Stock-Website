@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { loginValidation } from './Vaildations';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../USERAPIS/Uapi';
-
+import toast from 'react-hot-toast';
 export const Login = () => {
   const navigate=useNavigate();
   const formik = useFormik({
@@ -15,11 +15,17 @@ export const Login = () => {
       console.log('Form submitted:', values);
       let res=await login(values);
       if(res.status==200){
-        navigate("/dashboard");
+       toast.success("Login Successfull...")
+       setInterval(()=>{
+
+          navigate("/dashboard");
+        },2000)
+     
         console.log(res)
 
       }
       else{
+        toast.error("Authentication Problem")
         console.log(res)
       }
     },

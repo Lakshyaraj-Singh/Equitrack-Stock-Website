@@ -7,7 +7,7 @@ import userRouter from "./Routes/User.js"
 const app=express();    
 dotenv.config();
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: true,
   };
 app.use(cors(corsOptions));
