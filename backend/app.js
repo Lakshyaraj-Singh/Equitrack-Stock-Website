@@ -14,6 +14,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));  
 
+//stock api
+import { restClient } from '@polygon.io/client-js';
+
+const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
 
 //Defining Routes
 app.use("/api/user",userRouter)
@@ -36,3 +40,15 @@ app.listen(PORT, () => {
   console.log(`Listening to ${PORT}`);
 });
 
+
+
+// complete Polygon Setup
+// app.get("/test-poly", async (req, res) => { 
+//   try {
+//     const response = await rest.getGroupedStocksAggregates("2025-08-25");
+//     console.log('Response:', response.results.find(stock => stock.T === "AAPL"));
+    
+//   } catch (e) {
+//     console.error('An error happened:', e);
+//   }
+// });
