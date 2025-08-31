@@ -1,5 +1,20 @@
 //stock api
+import dotenv from 'dotenv';
+dotenv.config();
 import { restClient } from '@polygon.io/client-js';
 
-const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
+const rest = restClient(process.env.POLY_API_KEY,'https://api.polygon.io');
 
+export const AllStocksSummary=async(req,res)=>{
+    try {
+            const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+            if(!responseAll) return res.status(404).json({message:"Must Be Some Date Issue "})
+           let stockToSee= ["PLTR", "GEV", "TPR", "VST", "AXON", "UAL", "JBL", "AVGO", "DASH", "NRG", "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "ORCL", "RCL", "CCL", "CRWD", "COIN", "AMD", "ANET", "WDC", "BRKB", "DIS", "JPM", "V", "MA", "JNJ", "PG", "KO", "PFE", "XOM", "CVX", "HD", "WMT", "UNH", "BAC", "INTC", "CRM", "ADBE", "PYPL", "UBER", "CEG", "APH", "HWM", "MU"]
+            const response= responseAll.results.filter(stock => stockToSee.includes(stock.T));
+            if(response) return res.status(200).json(response)
+          }
+     catch (e) {
+     console.error('ERROR AT ALLSTOCKSSUMMARY:', e);
+     res.status(500).json({message:e.message});
+     }
+}

@@ -4,10 +4,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import {User} from "./Models/User.js"
 import userRouter from "./Routes/User.js"
+import stockRouter from "./Routes/Stock.js"
 const app=express();    
 dotenv.config();
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin:"*",
     credentials: true,
   };
 app.use(cors(corsOptions));
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Defining Routes
 app.use("/api/user",userRouter)
-
+app.use("/api/stk",stockRouter)
 const PORT = process.env.PORT || "3004";
 const url = process.env.MONGO;
 
