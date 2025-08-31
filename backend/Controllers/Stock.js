@@ -1,6 +1,6 @@
 //stock api
 import NodeCache from 'node-cache';
-const cache = new NodeCache({ stdTTL: 300 });
+const cache = new NodeCache({ stdTTL: 86400 });
 import dotenv from 'dotenv';
 dotenv.config();
 import { restClient } from '@polygon.io/client-js';
@@ -26,4 +26,23 @@ export const AllStocksSummary=async(req,res)=>{
      console.error('ERROR AT ALLSTOCKSSUMMARY:', e);
      res.status(500).json({message:e.message});
      }
+}
+
+export const particularStock=async(req,res)=>{
+    try{
+        let {stockName}=req.body;
+        const cacheKey = `particular-${stockName}2025-08-28`;
+        let cachedData=cache.get(cacheKey);
+        if(cachedData) return res.status(200).json(cachedData)
+        const response = await rest.getStocksOpenClose(stockName, "2025-08-28", {
+            adjusted: true
+        });
+        cache.set(cacheKey,response);
+        return res.status(200).json(response);
+
+    }
+    catch(error){
+        res.status(500).json({message:error.message});
+        console.log(error.message);
+    }
 }
