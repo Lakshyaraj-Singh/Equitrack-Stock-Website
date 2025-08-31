@@ -8,7 +8,7 @@ import stockRouter from "./Routes/Stock.js"
 const app=express();    
 dotenv.config();
 const corsOptions = {
-    origin:"*",
+    origin:[ "http://localhost:5173","https://hoppscotch.io","http://localhost:3000"],
     credentials: true,
   };
 app.use(cors(corsOptions));
