@@ -7,6 +7,8 @@ import { restClient } from '@polygon.io/client-js';
 
 const rest = restClient(process.env.POLY_API_KEY,'https://api.polygon.io');
 
+
+// controller to give all thse stocks on dashboard
 export const AllStocksSummary=async(req,res)=>{
     try {
         const cacheKey = 'stocks-2025-08-28';
@@ -28,6 +30,7 @@ export const AllStocksSummary=async(req,res)=>{
      }
 }
 
+// controller to give all the information of a particular stock on dashboard
 export const particularStock=async(req,res)=>{
     try{
         let {stockName}=req.body;
@@ -47,7 +50,7 @@ export const particularStock=async(req,res)=>{
     }
 }
 
-
+// controller to give all inform of month of a stock chart creation on dashboard
 export const chartMonth =async (req, res) => {
     try {
         let {stockName}=req.body;
