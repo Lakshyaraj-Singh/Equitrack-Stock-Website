@@ -46,3 +46,22 @@ export const particularStock=async(req,res)=>{
         console.log(error.message);
     }
 }
+
+
+export const chartMonth =async (req, res) => {
+    try {
+        let {stockName}=req.body;
+        const cacheKey = `particular-${stockName}`;
+        let cachedData=cache.get(cacheKey);
+        if(cachedData) return res.status(200).json(cachedData)
+      const response = await rest.getStocksAggregates(stockName, 1, "day", "2024-08-01", "2024-08-29");
+      cache.set(cacheKey,response);
+        return res.status(200).json(response);
+
+   
+  }
+  catch(error){
+    res.status(500).json({message:error.message});
+    console.log(error.message);
+  }
+}
