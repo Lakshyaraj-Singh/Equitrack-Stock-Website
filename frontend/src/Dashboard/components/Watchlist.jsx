@@ -17,7 +17,7 @@ export const Watchlist = ({data}) => {
   let stockId;
   const [activeModal, setActiveModal] = useState(null);
   const [selectedStock, setStock] = useState(null);
-  const [detail,setDetail]=useState({active:false,name:null})
+  const [detail,setDetail]=useState({active:false,name:""})
   //ALL THE FUNCTIONS:::::
   const openModal = (stock, type) => {
     setActiveModal(type);
