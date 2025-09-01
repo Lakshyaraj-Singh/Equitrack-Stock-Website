@@ -11,7 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { BuyBox } from "./UserOptionsOnDashboard/BuyBox";
 import { SellBox } from "./UserOptionsOnDashboard/SellBox";
 import { GraphBox } from "./UserOptionsOnDashboard/GraphBox";
-export const Watchlist = () => {
+export const Watchlist = ({data}) => {
+ console.log(data);
   let stockId;
   const [activeModal, setActiveModal] = useState(null);
   const [selectedStock, setStock] = useState(null);

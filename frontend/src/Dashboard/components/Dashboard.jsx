@@ -1,13 +1,14 @@
 
-import { Outlet } from "react-router-dom"
+import { Outlet, useLoaderData } from "react-router-dom"
 import { Watchlist } from "./Watchlist"
 
 
 export const Dashboard = () => {
+  let data=useLoaderData();
   return (
     <div className="flex justify-between bg-sky-100    h-[458px]">
         <div className="w-[499px] overflow-y-auto h-full bg-accent-content">
-            <Watchlist/>
+            <Watchlist data={data}/>
         </div>
         <div className="w-[61%]  h-[458px] ">
 

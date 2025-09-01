@@ -10,6 +10,7 @@ import { Pricing } from "./components/pricing/Pricing";
 import { Support } from "./components/support/Support";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
+import {Getwatchlist} from "./USERAPIS/Loaders/Getwatchlist"
 import { Signup } from "./components/signup/Signup";
 import { Login } from "./components/signup/Login";
 import { Dashboard } from "./Dashboard/components/Dashboard";
@@ -63,6 +64,7 @@ function App() {
       children:([
         { path:"",
           element:<Dashboard/>,
+          loader:Getwatchlist,
           children:([
             {
               index:true,
