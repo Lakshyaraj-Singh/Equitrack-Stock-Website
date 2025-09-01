@@ -16,7 +16,7 @@ export const Watchlist = ({data}) => {
   let stockId;
   const [activeModal, setActiveModal] = useState(null);
   const [selectedStock, setStock] = useState(null);
-  const [detail,setDetail]=useState({active:false,data:null})
+  const [detail,setDetail]=useState({active:false,name:null})
   //ALL THE FUNCTIONS:::::
   const openModal = (stock, type) => {
     setActiveModal(type);
@@ -25,6 +25,9 @@ export const Watchlist = ({data}) => {
   const close = () => {
     setActiveModal(null);
     selectedStock(null)
+  }
+  const detailModalEnabler=async(Stname)=>{
+    setDetail({active:true,name:Stname});
   }
   return (
     <div>
@@ -38,6 +41,7 @@ export const Watchlist = ({data}) => {
       {activeModal === "buy" && <BuyBox stock={selectedStock} oncloseModal={close} />}
       {activeModal === "sell" && <SellBox stock={selectedStock} oncloseModal={close} />}
       {activeModal === "graph" && <GraphBox stock={selectedStock} oncloseModal={close}/>}
+      {detail.active&& <StockBox stock={detail.name}/>}
     </div>
 
   )
@@ -54,7 +58,7 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
   }
   return (
     <>
-      <div onClick={()=>detailModalEnabler(true)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
+      <div onClick={()=>detailModalEnabler(stock.name)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
         <h2 className="font-medium">{stock.name}</h2>
         <div className="flex relative items-center cursor-default justify-between gap-5  text-left  w-fit">
           <p className="w-15">{stock.price}</p>
