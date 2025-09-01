@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { BuyBox } from "./UserOptionsOnDashboard/BuyBox";
 import { SellBox } from "./UserOptionsOnDashboard/SellBox";
 import { GraphBox } from "./UserOptionsOnDashboard/GraphBox";
+import { StockBox } from "./UserOptionsOnDashboard/StockBox";
 export const Watchlist = ({data}) => {
  console.log(data);
   let stockId;
@@ -26,15 +27,12 @@ export const Watchlist = ({data}) => {
     setActiveModal(null);
     selectedStock(null)
   }
-  const detailModalEnabler=async(Stname)=>{
-    setDetail({active:true,name:Stname});
-  }
   return (
     <div>
       <div className="flex flex-col     bg-red-400">
         {watchlist.map((stock, idx) => {
           return (
-            <WatchListItem stock={stock} key={idx} onClick={openModal} />
+            <WatchListItem stock={stock} key={idx} setDetail={setDetail} onClick={openModal} />
           )
         })}
       </div>
@@ -44,11 +42,14 @@ export const Watchlist = ({data}) => {
       {detail.active&& <StockBox stock={detail.name}/>}
     </div>
 
-  )
+)
 }
 
 const WatchListItem = ({ stock, onClick ,setDetail}) => {
   let [listActions, setShowListActions] = useState(false)
+  const detailModalEnabler=async(Stname)=>{
+    setDetail({active:true,name:"AAPL"});
+  }
   
   const handleEnter = () => {
     setShowListActions(true)
