@@ -16,7 +16,7 @@ export const Watchlist = ({data}) => {
   let stockId;
   const [activeModal, setActiveModal] = useState(null);
   const [selectedStock, setStock] = useState(null);
-
+  const [detail,setDetail]=useState({active:false,data:null})
   //ALL THE FUNCTIONS:::::
   const openModal = (stock, type) => {
     setActiveModal(type);
@@ -43,9 +43,9 @@ export const Watchlist = ({data}) => {
   )
 }
 
-const WatchListItem = ({ stock, onClick }) => {
+const WatchListItem = ({ stock, onClick ,setDetail}) => {
   let [listActions, setShowListActions] = useState(false)
-
+  
   const handleEnter = () => {
     setShowListActions(true)
   }
@@ -54,7 +54,7 @@ const WatchListItem = ({ stock, onClick }) => {
   }
   return (
     <>
-      <div onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
+      <div onClick={()=>detailModalEnabler(true)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
         <h2 className="font-medium">{stock.name}</h2>
         <div className="flex relative items-center cursor-default justify-between gap-5  text-left  w-fit">
           <p className="w-15">{stock.price}</p>

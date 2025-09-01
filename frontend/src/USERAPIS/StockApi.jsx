@@ -18,3 +18,13 @@ export const dashBoardAllStock=async()=>{
         return error.response
     }
 }
+
+export const stockDetail=async({stockName})=>{
+    try{
+       let res=await api.post(`paticularStock`,{stockName});
+       return res;
+    }
+    catch(error){
+        return error.response;
+    }
+}
