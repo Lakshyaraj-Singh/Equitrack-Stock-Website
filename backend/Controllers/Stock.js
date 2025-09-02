@@ -36,12 +36,17 @@ export const particularStock=async(req,res)=>{
         let {stockName}=req.body;
         const cacheKey = `particular-${stockName}2025-08-28`;
         let cachedData=cache.get(cacheKey);
-        if(cachedData) return res.status(200).json(cachedData)
+        const cacheKey2 = `particular-${stockName}-des2025-08-28`;
+        let cachedData2=cache.get(cacheKey);
+        if(cachedData && cachedData2) return res.status(200).json({cachedData,cacheKey2})
+        
         const response = await rest.getStocksOpenClose(stockName, "2025-08-28", {
             adjusted: true
         });
+        const response2 = await rest.getTicker(stockName);
         cache.set(cacheKey,response);
-        return res.status(200).json(response);
+        cache.set(cacheKey2,response2);
+        return res.status(200).json({data1:response,data2:response2});
 
     }
     catch(error){
