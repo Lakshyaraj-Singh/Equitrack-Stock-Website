@@ -13,7 +13,7 @@ import { SellBox } from "./UserOptionsOnDashboard/SellBox";
 import { GraphBox } from "./UserOptionsOnDashboard/GraphBox";
 import { StockBox } from "./UserOptionsOnDashboard/StockBox";
 export const Watchlist = ({data}) => {
- console.log(data);
+ const realStocks=data.data;
   let stockId;
   const [activeModal, setActiveModal] = useState(null);
   const [selectedStock, setStock] = useState(null);
@@ -30,7 +30,7 @@ export const Watchlist = ({data}) => {
   return (
     <div>
       <div className="flex flex-col     bg-red-400">
-        {watchlist.map((stock, idx) => {
+        {realStocks.map((stock, idx) => {
           return (
             <WatchListItem stock={stock} key={idx} setDetail={setDetail} onClick={openModal} />
           )
@@ -46,9 +46,11 @@ export const Watchlist = ({data}) => {
 }
 
 const WatchListItem = ({ stock, onClick ,setDetail}) => {
+
   let [listActions, setShowListActions] = useState(false)
+  let isDown=(stock.c-stock.o>0 ?false:true);
   const detailModalEnabler=async(Stname)=>{
-    setDetail({active:true,name:"AAPL"});
+    setDetail({active:true,name:Stname});
   }
   
   const handleEnter = () => {
@@ -59,13 +61,13 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
   }
   return (
     <>
-      <div onClick={()=>detailModalEnabler(stock.name)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
-        <h2 className="font-medium">{stock.name}</h2>
+      <div onClick={()=>detailModalEnabler(stock.T)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
+        <h2 className="font-medium">{stock.T}</h2>
         <div className="flex relative items-center cursor-default justify-between gap-5  text-left  w-fit">
           <p className="w-15">{stock.price}</p>
 
-          {stock.isDown ? <span className="bg-red-700  rotate-180"><EjectIcon style={{ width: "18px" }} /></span > : <span className="bg-green-500"><EjectIcon style={{ width: "18px" }} /></span>}
-          <p className={stock.isDown ? "text-red-600 w-10" : "text-green-400  w-10"}>{stock.percent}</p>
+          {isDown ? <span className="bg-red-700  rotate-180"><EjectIcon style={{ width: "18px" }} /></span > : <span className="bg-green-500"><EjectIcon style={{ width: "18px" }} /></span>}
+          <p className={isDown ? "text-red-600 w-10" : "text-green-400  w-10"}>{isDown ?`${(stock.c-stock.o).toFixed(2)}%`:`+${(stock.c-stock.o).toFixed(2)}%`}</p>
 
           {listActions && <HoverListAction stock={stock} uid={stock.name} onClick={onClick} />}
         </div>

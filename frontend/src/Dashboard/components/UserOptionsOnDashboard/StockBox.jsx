@@ -10,7 +10,7 @@ export const StockBox = ({stock}) => {
             try{
               const res=await stockDetail(stock);
               setStock(res.data);
-             
+              console.log(stockD)
                 }
               catch(error){
                   console.log(error)
@@ -23,6 +23,8 @@ export const StockBox = ({stock}) => {
     
     
     return (
-    <div></div>
+    <div>
+    <h1>{stockD?.symbol}</h1>
+    </div>
   )
 }
