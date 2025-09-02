@@ -59,6 +59,8 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
   const handleLeave = () => {
     setShowListActions(false)
   }
+  let change=((stock.c-stock.o)/stock.o).toFixed(2);
+  let percentageChange=(((stock.c-stock.o)/stock.o)*100).toFixed(2);
   return (
     <>
       <div onClick={()=>detailModalEnabler(stock.T)} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className="flex cursor-default justify-between border-[1px] p-4  bg-cyan-900 text-white items-center text-sm">
@@ -67,7 +69,7 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
           <p className="w-15">{stock.price}</p>
 
           {isDown ? <span className="bg-red-700  rotate-180"><EjectIcon style={{ width: "18px" }} /></span > : <span className="bg-green-500"><EjectIcon style={{ width: "18px" }} /></span>}
-          <p className={isDown ? "text-red-600 w-10" : "text-green-400  w-10"}>{isDown ?`${(stock.c-stock.o).toFixed(2)}%`:`+${(stock.c-stock.o).toFixed(2)}%`}</p>
+          <p className={isDown ? "text-red-600 w-10" : "text-green-400  w-10"}>{isDown ?`${percentageChange}%`:`+${percentageChange}%`}</p>
 
           {listActions && <HoverListAction stock={stock} uid={stock.name} onClick={onClick} />}
         </div>
