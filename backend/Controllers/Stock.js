@@ -30,6 +30,33 @@ export const AllStocksSummary=async(req,res)=>{
      }
 }
 
+// A simple function to introduce a delay
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// A wrapper function to handle retries with exponential backoff
+async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000) {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            return await fetchFunction();
+        } catch (error) {
+            // Check for a 429 status code
+            if (error.response && error.response.status === 429) {
+                console.warn(`Rate limit hit. Retrying in ${retryDelay}ms... (Attempt ${i + 1} of ${maxRetries})`);
+                await sleep(retryDelay);
+                // Double the delay for the next attempt
+                retryDelay *= 2; 
+            } else {
+                // If it's a different error, re-throw it
+                throw error;
+            }
+        }
+    }
+    // If all retries fail, throw an error
+    throw new Error('All retry attempts failed due to rate limiting.');
+}
+
 // controller to give all the information of a particular stock on dashboard
 export const particularStock=async(req,res)=>{
     try{
@@ -39,20 +66,24 @@ export const particularStock=async(req,res)=>{
         const cacheKey2 = `particular-${stockName}-des2025-08-28`;
         let cachedData2=cache.get(cacheKey2);
         const cacheKey3 = `particular-${stockName}-dividend`;
-        let cachedData3=cache.get(cacheKey2);
+        let cachedData3=cache.get(cacheKey3);
         const cacheKey4 = `particular-${stockName}-financial`;
-        let cachedData4=cache.get(cacheKey2);
-        if(cachedData && cachedData2 &&cachedData3) return res.status(200).json({data1:cachedData,data2:cachedData2,dividends:cachedData3,financial:cachedData4})
+        let cachedData4=cache.get(cacheKey4);
+        if(cachedData && cachedData2 ) return res.status(200).json({data1:cachedData,data2:cachedData2,dividends:cachedData3,financial:cachedData4})
         
-        const response = await rest.getStocksOpenClose(stockName, "2025-08-28", {
-            adjusted: true
-        });
-        const response2 = await rest.getTicker(stockName);
-        const response3=await  rest.listDividends(stockName);
-        const financial=await rest.listFinancials(stockName) ;
+        
+        const [response, response2, response3, financiall] = await Promise.all([
+            fetchWithBackoff(() => rest.getStocksOpenClose(stockName, "2025-08-28", { adjusted: true })),
+            fetchWithBackoff(() => rest.getTicker(stockName)),
+            fetchWithBackoff(() => rest.listDividends(stockName)),
+            fetchWithBackoff(() => rest.listFinancials(stockName))
+        ]);
         cache.set(cacheKey,response);
         cache.set(cacheKey2,response2);
-        return res.status(200).json({data1:response,data2:response2,dividends:response3,financial:financial});
+        cache.set(cacheKey3,response3);
+        cache.set(cacheKey4,financiall);
+        
+        return res.status(200).json({data1:response,data2:response2,dividends:response3,financial:financiall});
 
     }
     catch(error){
