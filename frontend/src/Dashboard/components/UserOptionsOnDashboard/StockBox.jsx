@@ -21,8 +21,31 @@ export const StockBox = ({stock}) => {
           fetchData();
         
     }, [stock])
-    console.log("Dividend data:", stockD?.dividends?.results?.[0]);
-console.log("Financial data:", stockD?.financial?.results?.[0]);
+    let dividendYield = 0;
+let peRatio = "N/A";
+
+// 1. Calculate Dividend Yield
+if (stockD?.dividends?.results && stockD.dividends.results.length > 0) {
+  const latestDividend = stockD.dividends.results[0].cash_amount; // 0.165
+  const frequency = stockD.dividends.results[0].frequency; // 4 (quarterly)
+  const annualDividend = latestDividend * frequency; // 0.165 * 4 = 0.66
+  const currentPrice = stockD?.data1?.close; // 111.94
+  
+  if (currentPrice && annualDividend > 0) {
+    dividendYield = ((annualDividend / currentPrice) * 100).toFixed(2);
+    // (0.66 / 111.94) * 100 = 0.59%
+  }
+}
+
+// 2. Calculate P/E Ratio
+if (stockD?.financial?.results && stockD.financial.results.length > 0) {
+  const financialData = stockD.financial.results[0];
+  const eps = financialData?.financials?.income_statement?.basic_earnings_per_share?.value;
+  const currentPrice = stockD?.data1?.close;
+  
+  if (eps && currentPrice && eps > 0) {
+    peRatio = (currentPrice / eps).toFixed(2);
+  }  } 
     let stockDetails=stockD?.data2;
     let change=(stockD?.data1?.close-stockD?.data1?.open).toFixed(2);
     if(change){let percentageChange=((change/stockD?.data1?.open)*100).toFixed(2);}
@@ -56,7 +79,7 @@ console.log("Financial data:", stockD?.financial?.results?.[0]);
         </div>
       <div className="gap-3 w-30 place-items-center ">
           <p className="text-gray-500 text-xs  font-semibold">Diviend yield</p>
-          <p className="text-md font-bold">2.83</p>
+          <p className="text-md font-bold">{dividendYield}%</p>
         </div>
       <div className="gap-3 w-30 place-items-center ">
           <p className="text-gray-500 text-xs  font-semibold">Today High</p>
