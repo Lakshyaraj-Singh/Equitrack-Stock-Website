@@ -75,7 +75,7 @@ if (stockD?.financial?.results && stockD.financial.results.length > 0) {
         </div>
       <div className="gap-3 w-30 place-items-center ">
           <p className="text-gray-500 text-xs  font-semibold">P/E Ratio</p>
-          <p className="text-md font-bold">2.83</p>
+          <p className="text-md font-bold">{peRatio}</p>
         </div>
       <div className="gap-3 w-30 place-items-center ">
           <p className="text-gray-500 text-xs  font-semibold">Diviend yield</p>
