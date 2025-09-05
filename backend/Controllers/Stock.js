@@ -38,15 +38,21 @@ export const particularStock=async(req,res)=>{
         let cachedData=cache.get(cacheKey);
         const cacheKey2 = `particular-${stockName}-des2025-08-28`;
         let cachedData2=cache.get(cacheKey2);
-        if(cachedData && cachedData2) return res.status(200).json({data1:cachedData,data2:cachedData2})
+        const cacheKey3 = `particular-${stockName}-dividend`;
+        let cachedData3=cache.get(cacheKey2);
+        const cacheKey4 = `particular-${stockName}-financial`;
+        let cachedData4=cache.get(cacheKey2);
+        if(cachedData && cachedData2 &&cachedData3) return res.status(200).json({data1:cachedData,data2:cachedData2,dividends:cachedData3,financial:cachedData4})
         
         const response = await rest.getStocksOpenClose(stockName, "2025-08-28", {
             adjusted: true
         });
         const response2 = await rest.getTicker(stockName);
+        const response3=await  rest.listDividends(stockName);
+        const financial=await rest.listFinancials(stockName) ;
         cache.set(cacheKey,response);
         cache.set(cacheKey2,response2);
-        return res.status(200).json({data1:response,data2:response2});
+        return res.status(200).json({data1:response,data2:response2,dividends:response3,financial:financial});
 
     }
     catch(error){
