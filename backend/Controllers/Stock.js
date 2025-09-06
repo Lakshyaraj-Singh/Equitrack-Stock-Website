@@ -58,7 +58,7 @@ async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000
 }
 
 // controller to give all the information of a particular stock on dashboard
-export const particularStock=async(req,res)=>{
+export const particularDetailStock=async(req,res)=>{
     try{
         let {stockName}=req.body;
         const cacheKey = `particular-${stockName}2025-08-28`;
@@ -109,4 +109,21 @@ export const chartMonth =async (req, res) => {
     res.status(500).json({message:error.message});
     console.log(error.message);
   }
+}
+
+
+export const particularStock=async(req,res)=>{
+   try{
+    let {stockName}=req.body;
+    const cacheKey = `particular-${stockName}2025-08-28`;
+        let cachedData=cache.get(cacheKey);
+        if(cachedData ) return res.status(200).json(cachedData);
+        const response=await rest.getStocksOpenClose(stockName, "2025-08-28", { adjusted: true });
+        cache.set(cacheKey,response);
+        return res.status(200).json(response);
+   }
+   catch(error){
+    res.status(500).json({message:error.message});
+    console.log(error.message);
+   }
 }
