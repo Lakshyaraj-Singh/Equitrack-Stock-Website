@@ -36,6 +36,7 @@ export const loginUser=async(req,res)=>{
        userId:checkIfUser._id,
        email:checkIfUser.email
       },process.env.JWT_SECRET,{expiresIn:"24h"});
+      
       return res.status(200).json({message:"Succesfully User Logged In",token})
    }
 
