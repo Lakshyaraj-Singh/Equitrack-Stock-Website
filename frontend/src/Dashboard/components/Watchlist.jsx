@@ -25,7 +25,7 @@ export const Watchlist = ({data}) => {
   }
   const close = () => {
     setActiveModal(null);
-    selectedStock(null);
+    setStock(null);
   
   }
   return (
