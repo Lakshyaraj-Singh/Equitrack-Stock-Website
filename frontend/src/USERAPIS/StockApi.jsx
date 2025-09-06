@@ -22,6 +22,17 @@ export const dashBoardAllStock=async()=>{
 export const stockDetail=async(Name)=>{
     const Data={stockName:Name}
     try{
+       let res=await api.post("/particularStockDetail",Data);
+       return res;
+    }
+    catch(error){
+        return error.response;
+    }
+}
+
+export const stockActions=async(Name)=>{
+    const Data={stockName:Name}
+    try{
        let res=await api.post("/particularStock",Data);
        return res;
     }
