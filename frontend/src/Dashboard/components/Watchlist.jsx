@@ -25,7 +25,8 @@ export const Watchlist = ({data}) => {
   }
   const close = () => {
     setActiveModal(null);
-    selectedStock(null)
+    selectedStock(null);
+  
   }
   return (
     <div>
@@ -39,7 +40,7 @@ export const Watchlist = ({data}) => {
       {activeModal === "buy" && <BuyBox stock={selectedStock} oncloseModal={close} />}
       {activeModal === "sell" && <SellBox stock={selectedStock} oncloseModal={close} />}
       {activeModal === "graph" && <GraphBox stock={selectedStock} oncloseModal={close}/>}
-      {detail.active&& <StockBox stock={detail.name}/>}
+      {detail.active&& <StockBox stock={detail.name} oncloseModal={()=>{setDetail({active:false,name:""})}}/>}
     </div>
 
 )

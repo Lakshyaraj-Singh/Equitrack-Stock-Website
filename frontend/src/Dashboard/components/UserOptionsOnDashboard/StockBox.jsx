@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { stockDetail } from "../../../USERAPIS/StockApi"
 
-export const StockBox = ({stock}) => {
+export const StockBox = ({stock ,oncloseModal}) => {
     let [stockD,setStock]=useState(null)
     console.log(stock)
     useEffect(() => {
@@ -52,7 +52,8 @@ if (stockD?.financial?.results && stockD.financial.results.length > 0) {
     let percentageChange=((change/stockD?.data1?.open)*100).toFixed(2);
     return (
     <div className="w-screen h-screen absolute z-10 place-content-center place-items-center backdrop-blur-xs inset-0">
-    <div className="bg-white w-[50%] p-3 mb-20 shadow-2xl shadow-black rounded ">
+    <div className="bg-white w-[50%] flex flex-col p-3 mb-20 shadow-2xl shadow-black rounded ">
+       <i onClick={oncloseModal} class="fa-solid fa-xmark self-end cursor-pointer"></i>
     <div className="flex justify-between  rounded-2xl  bg-blue-50 p-3 text-sm">
       <div>
     <img className="w-15 " src={`https://img.logo.dev/${stockDetails?.results.name.split(' ')[0]}.com?token=pk_fz4v-CQ2S2eNsQe1uWZjPg`} alt="" />
