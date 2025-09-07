@@ -21,6 +21,7 @@ export const BuyBox = ({ stock, oncloseModal }) => {
     }
 
     const handleBuyStock=async()=>{
+        let symbol=""
         let data={
             symbol:stock.T,
             quantity:quantity,
@@ -29,11 +30,13 @@ export const BuyBox = ({ stock, oncloseModal }) => {
         let res=await buyingStocksAction(data);
         if(res.status==200){
             toast.success(`Congratulatins Bought ${symbol}`)
+            console.log(res)
         }
         else{
             toast.error("Error Occured");
         }
         oncloseModal();
+        console.log(res)
     }
     
     let modalRef = useRef();

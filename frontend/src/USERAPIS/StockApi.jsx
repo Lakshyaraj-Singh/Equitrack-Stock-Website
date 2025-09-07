@@ -43,6 +43,7 @@ export const stockActions = async (Name) => {
 
 export const buyingStocksAction = async (data) => {
      let token=localStorage.getItem("token")
+     console.log(token)
     try {
         let res = await api.post("/buyStock", data,{headers:{'Authorization':`Bearer ${token}`}});
         return res;
