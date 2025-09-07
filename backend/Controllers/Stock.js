@@ -190,3 +190,18 @@ export const buyingStock=async(req,res)=>{
         console.log(error.message);
     }
 }
+
+export const userPortfolio=async(req,res)=>{
+    try{
+        let user=await User.findById(req.user);
+        if (!user) return res.status(404).json({message:"User Not Found"});
+        let allStocks=user.stocks;
+        res.status(200).json({stocks:allStocks,balance:user.balance})
+
+        
+    }
+    catch(error){
+        res.status(500).json({message:error.message});
+        console.log(error.message);
+    }
+}

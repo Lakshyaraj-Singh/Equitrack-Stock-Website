@@ -11,4 +11,5 @@ router.post("/particularStock",stock.particularStock)
 
 //Stock Actions
 router.post("/buyStock",Auth,stock.buyingStock)
+router.get("/portfolio",Auth,stock.userPortfolio);
 export default router;
