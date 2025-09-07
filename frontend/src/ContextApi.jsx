@@ -1,4 +1,4 @@
-// contexts/TradingContext.js
+
 import { createContext, useContext, useState } from 'react';
 
 const TradingContext = createContext();
@@ -6,10 +6,10 @@ const TradingContext = createContext();
 export const TradingProvider = ({ children }) => {
     const [tradingData, setTradingData] = useState({
         balance: 100000,
-        stocks: [],           // Array from your database
-        totalInvestment: 0,   // Sum of all totalInvested
-        currentValue: 0,      // Current worth of all stocks
-        totalProfit: 0        // currentValue - totalInvestment
+        stocks: [],           
+        totalInvestment: 0,   
+        currentValue: 0,      
+        totalProfit: 0        
     });
 
     // Function to calculate portfolio values
@@ -22,7 +22,7 @@ export const TradingProvider = ({ children }) => {
             totalInvestment += stock.totalInvested;
             
             // Get current price from Polygon API
-            const currentPrice = await getCurrentPrice(stock.symbol);
+            
             currentValue += stock.quantity * currentPrice;
         }
         
