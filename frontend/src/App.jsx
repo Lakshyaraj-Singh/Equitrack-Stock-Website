@@ -19,6 +19,7 @@ import{Positions} from "./Dashboard/components/Positions";
 import{Holdings} from "./Dashboard/components/Holdings";
 import{Funds} from "./Dashboard/components/Funds";
 import { Orders } from "./Dashboard/components/Orders";
+import { TradingProvider } from "./ContextApi";
 function App() {
   const router = createBrowserRouter([
     {
@@ -60,7 +61,7 @@ function App() {
     },
     {
       path:"/dashboard",
-      element:<HomeDash/>,
+      element:<TradingProvider><HomeDash/></TradingProvider>,
       children:([
         { path:"",
           element:<Dashboard/>,
