@@ -4,7 +4,7 @@ const cache = new NodeCache({ stdTTL: 86400 });
 import dotenv from 'dotenv';
 dotenv.config();
 import { restClient } from '@polygon.io/client-js';
-import { User } from '../Models/User';
+import { User } from '../Models/User.js';
 
 const rest = restClient(process.env.POLY_API_KEY,'https://api.polygon.io');
 
@@ -152,6 +152,8 @@ export const particularStock=async(req,res)=>{
 export const buyingStock=async(req,res)=>{
     try{
        let {symbol,quantity,totalCost}=req.body;
+       quantity=parseInt(quantity);
+       totalCost=parseFloat(totalCost)
        let buyer=await User.findById(req.user);
        if(!buyer) return res.status(400).json({message:"User Does not exist"});
        if(buyer.balance<totalCost) return res.status(400).json({message:"Insufficient Balance"});
