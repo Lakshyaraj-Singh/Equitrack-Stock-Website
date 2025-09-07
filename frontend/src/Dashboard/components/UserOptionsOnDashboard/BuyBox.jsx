@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import { stockActions } from "../../../USERAPIS/StockApi";
+import { buyingStocksAction, stockActions } from "../../../USERAPIS/StockApi";
+import toast from "react-hot-toast";
 export const BuyBox = ({ stock, oncloseModal }) => {
 
     let [quantity,setQuantity]=useState(1);
@@ -19,13 +20,19 @@ export const BuyBox = ({ stock, oncloseModal }) => {
         setQuantity(qty);
     }
 
-    const handleBuyStock=()=>{
+    const handleBuyStock=async()=>{
         let data={
-            name:stock.T,
+            symbol:stock.T,
             quantity:quantity,
             totalCost:totalCost.toFixed(2)
         }
-        console.log(data)
+        let res=await buyingStocksAction(data);
+        if(res.status==200){
+            toast.success(`Congratulatins Bought ${symbol}`)
+        }
+        else{
+            toast.error("Error Occured");
+        }
         oncloseModal();
     }
     
