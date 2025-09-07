@@ -10,6 +10,7 @@ const api=axios.create({
 export const login=async(data)=>{
 try{
     let res=await api.post("/login",data);
+    localStorage.setItem("token",res.data.token)
     return res;
 }
 catch(error){
