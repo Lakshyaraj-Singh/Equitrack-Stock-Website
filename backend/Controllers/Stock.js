@@ -4,6 +4,7 @@ const cache = new NodeCache({ stdTTL: 86400 });
 import dotenv from 'dotenv';
 dotenv.config();
 import { restClient } from '@polygon.io/client-js';
+import { User } from '../Models/User';
 
 const rest = restClient(process.env.POLY_API_KEY,'https://api.polygon.io');
 
@@ -126,4 +127,64 @@ export const particularStock=async(req,res)=>{
     res.status(500).json({message:error.message});
     console.log(error.message);
    }
+}
+
+// symbol: {
+//     type: String,
+//     required: true,
+//     uppercase: true, 
+//   },
+//   quantity: {
+//     type: Number,
+//     required: true,
+//     min: 0,
+//   },
+//   avgBuyPrice: {
+//     type: Number,
+//     required: true,
+//   },
+//   totalInvested: {
+//     type: Number,
+//     required: true,
+//   },
+
+// buying stocks and sell
+export const buyingStock=async(req,res)=>{
+    try{
+       let {symbol,quantity,totalCost}=req.body;
+       let buyer=await User.findById(req.user);
+       if(!buyer) return res.status(400).json({message:"User Does not exist"});
+       if(buyer.balance<totalCost) return res.status(400).json({message:"Insufficient Balance"});
+       let price=totalCost/quantity;
+       let haveStock= buyer.stocks.find(stock=> stock.symbol===symbol);
+       if(haveStock){
+        const totalInvested=haveStock.totalInvested+totalCost;
+        const newQuantity=haveStock.quantity+quantity;
+        const avgBuyPrice=totalInvested/newQuantity;
+        haveStock.totalInvested=totalInvested;
+        haveStock.quantity=newQuantity;
+        haveStock.avgBuyPrice=avgBuyPrice;
+       }
+       else{
+        let newStock={
+            symbol:symbol,
+            quantity:quantity,
+            avgBuyPrice:price,
+            totalInvested:totalCost
+        }
+
+         buyer.stocks.push(newStock)
+        
+       }
+       buyer.balance -= totalCost;
+       let succesfull=await buyer.save();
+       if(!succesfull) {
+        return res.status(400).json({message:"Error Occured in Updating User Stocks"});}
+       return res.status(200).json({message:"Successfully Stock Bought"})
+
+    }
+    catch(error){
+        res.status(500).json({message:error.message});
+        console.log(error.message);
+    }
 }

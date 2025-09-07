@@ -8,5 +8,5 @@ router.post("/particularStock",stock.particularStock)
 
 
 //Stock Actions
-// router.post("/buyStock")
+router.post("/buyStock",)
 export default router;
