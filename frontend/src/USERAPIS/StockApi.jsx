@@ -57,7 +57,7 @@ export const portfolio=async (data) => {
     let token=localStorage.getItem("token")
     
    try {
-       let res = await api.post("/portfoilio",{headers:{'Authorization':`Bearer ${token}`}});
+       let res = await api.get("/portfoilio",{headers:{'Authorization':`Bearer ${token}`}});
        return res;
    }
    catch (error) {

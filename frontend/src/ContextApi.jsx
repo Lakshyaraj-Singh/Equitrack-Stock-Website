@@ -1,11 +1,13 @@
 
 import { createContext, useContext, useState } from 'react';
+import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
 
-export const TradingProvider = ({ children }) => {
+export const TradingProvider = async({ children }) => {
+    let userData=await portfolio();
     const [tradingData, setTradingData] = useState({
-        balance: 100000,
+        balance:0,
         stocks: [],           
         totalInvestment: 0,   
         currentValue: 0,      
@@ -13,15 +15,15 @@ export const TradingProvider = ({ children }) => {
     });
 
     // Function to calculate portfolio values
+    let totalInvestment = 0;
+    let currentValue = 0;
     const calculatePortfolio = async () => {
-        let totalInvestment = 0;
-        let currentValue = 0;
         
-        // Loop through user's stocks
+       
         for (let stock of tradingData.stocks) {
             totalInvestment += stock.totalInvested;
             
-            // Get current price from Polygon API
+          
             
             currentValue += stock.quantity * currentPrice;
         }
@@ -29,13 +31,23 @@ export const TradingProvider = ({ children }) => {
         const totalProfit = currentValue - totalInvestment;
         
         // Update the notebook
-        setTradingData(prev => ({
-            ...prev,
-            totalInvestment,
+        
+            return{totalInvestment,
             currentValue,
-            totalProfit
-        }));
+            totalProfit}
+        
+
+
     };
+
+    useEffect(() => {
+      const loadingPortfolio=()=>{
+        
+      }
+    
+      
+    })
+    
 
     return (
         <TradingContext.Provider value={{ 
