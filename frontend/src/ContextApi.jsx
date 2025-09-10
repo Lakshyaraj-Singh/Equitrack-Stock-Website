@@ -4,56 +4,54 @@ import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
 
-export const TradingProvider = async({ children }) => {
-    let userData=await portfolio();
+export const TradingProvider = async ({ children }) => {
+    let userData = await portfolio();
     const [tradingData, setTradingData] = useState({
-        balance:0,
-        stocks: [],           
-        totalInvestment: 0,   
-        currentValue: 0,      
-        totalProfit: 0        
+        balance: 0,
+        stocks: [],
+        totalInvestment: 0,
+        currentValue: 0,
+        totalProfit: 0,
+        loading: false,
+        error: "",
+
     });
 
-    // Function to calculate portfolio values
-    let totalInvestment = 0;
-    let currentValue = 0;
-    const calculatePortfolio = async () => {
-        
-       
-        for (let stock of tradingData.stocks) {
-            totalInvestment += stock.totalInvested;
-            
-          
-            
-            currentValue += stock.quantity * currentPrice;
+    const loadPortfolio = async () => {
+
+        try {
+            setTradingData(prev => ({ ...prev, loading: true }))
+            let res = await portfolio();
+            if (res.status == 200) {
+                setTradingData({
+                    balance: res.balance,
+                    stocks: res.stocks,
+                    totalInvestment: res.totalInvested,
+                    currentValue: res.currentValue,
+                    totalProfit:res.totalProfit
+                })
+
+            }
+
         }
-        
-        const totalProfit = currentValue - totalInvestment;
-        
-        // Update the notebook
-        
-            return{totalInvestment,
-            currentValue,
-            totalProfit}
-        
-
-
-    };
-
+        catch (error) {
+            console.log(error);
+            setTradingData(prev => ({
+                ...prev, error: error.message, loading: false
+            }))
+        }
+    }
     useEffect(() => {
-      const loadingPortfolio=()=>{
-        
-      }
-    
-      
+        loadPortfolio
+
+
     })
-    
 
     return (
-        <TradingContext.Provider value={{ 
-            tradingData, 
+        <TradingContext.Provider value={{
+            tradingData,
             setTradingData,
-            calculatePortfolio 
+            loadPortfolio
         }}>
             {children}
         </TradingContext.Provider>
