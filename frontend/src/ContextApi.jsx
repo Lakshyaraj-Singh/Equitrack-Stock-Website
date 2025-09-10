@@ -4,8 +4,8 @@ import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
 
-export const TradingProvider = async ({ children }) => {
-    let userData = await portfolio();
+export const TradingProvider =  ({ children }) => {
+  
     const [tradingData, setTradingData] = useState({
         balance: 0,
         stocks: [],
@@ -14,6 +14,7 @@ export const TradingProvider = async ({ children }) => {
         totalProfit: 0,
         loading: false,
         error: "",
+        change,
 
     });
 
@@ -28,7 +29,10 @@ export const TradingProvider = async ({ children }) => {
                     stocks: res.stocks,
                     totalInvestment: res.totalInvested,
                     currentValue: res.currentValue,
-                    totalProfit:res.totalProfit
+                    totalProfit:res.totalProfit,
+                    change:res.change,
+                    loading:fales,
+                    error:""
                 })
 
             }
@@ -42,7 +46,7 @@ export const TradingProvider = async ({ children }) => {
         }
     }
     useEffect(() => {
-        loadPortfolio
+        loadPortfolio()
 
 
     })
