@@ -7,6 +7,7 @@ const TradingContext = createContext();
 export const TradingProvider =  ({ children }) => {
   
     const [tradingData, setTradingData] = useState({
+        name:"",
         balance: 0,
         stocks: [],
         totalInvestment: 0,
@@ -25,13 +26,14 @@ export const TradingProvider =  ({ children }) => {
             let res = await portfolio();
             if (res.status == 200) {
                 setTradingData({
+                    name:res.name,
                     balance: res.balance,
                     stocks: res.stocks,
                     totalInvestment: res.totalInvested,
                     currentValue: res.currentValue,
                     totalProfit:res.totalProfit,
                     change:res.change,
-                    loading:fales,
+                    loading:false,
                     error:""
                 })
 
