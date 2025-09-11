@@ -47,6 +47,8 @@ export const TradingProvider =  ({ children }) => {
             }))
         }
     }
+
+  
     useEffect(() => {
         loadPortfolio()
 
