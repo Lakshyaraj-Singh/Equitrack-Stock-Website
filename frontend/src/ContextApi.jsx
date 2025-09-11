@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
@@ -15,7 +15,7 @@ export const TradingProvider =  ({ children }) => {
         totalProfit: 0,
         loading: false,
         error: "",
-        change,
+        change:""
 
     });
 
@@ -26,17 +26,17 @@ export const TradingProvider =  ({ children }) => {
             let res = await portfolio();
             if (res.status == 200) {
                 setTradingData({
-                    name:res.name,
-                    balance: res.balance,
-                    stocks: res.stocks,
-                    totalInvestment: res.totalInvested,
-                    currentValue: res.currentValue,
-                    totalProfit:res.totalProfit,
-                    change:res.change,
+                    name:res.data.name,
+                    balance: res.data.balance,
+                    stocks: res.data.stocks,
+                    totalInvestment: res.data.totalInvested,
+                    currentValue: res.data.currentValue,
+                    totalProfit:res.data.totalProfit,
+                    change:res.data.change,
                     loading:false,
                     error:""
                 })
-
+               console.log(res)
             }
 
         }
@@ -51,7 +51,8 @@ export const TradingProvider =  ({ children }) => {
         loadPortfolio()
 
 
-    })
+    },[])
+    
 
     return (
         <TradingContext.Provider value={{
