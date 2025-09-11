@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import {User} from "./Models/User.js"
+import bodyParser from "body-parser";
 import userRouter from "./Routes/User.js"
 import stockRouter from "./Routes/Stock.js"
 const app=express();    
@@ -13,7 +14,8 @@ const corsOptions = {
   };
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));  
+app.use(express.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded()); 
 
 
 

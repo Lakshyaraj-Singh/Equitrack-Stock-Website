@@ -191,13 +191,11 @@ export const buyingStock = async (req, res) => {
         console.log(error.message);
     }
 }
-// balance: res.balance,
-//                     stocks: res.stocks,
-//                     totalInvestment: res.totalInvested, 
-//                     currentValue: res.currentValue,
-//                     totalProfit:res.totalProfit
+  
+
 export const userPortfolio = async (req, res) => {
     try {
+        console.log("this is",req.user);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
@@ -206,14 +204,24 @@ export const userPortfolio = async (req, res) => {
         let stockNames = allStocks.map(stocks => stocks.T)
         let currentValueStocks = responseAll.results.filter(stock => stockNames.includes(stock.T)).reduce((sum, cur) => sum + cur, 0)
         let change=currentValueStocks-totalInvestment;
-        let profitPerc=(change/totalInvestment)*100;
-    
+        let profitPerc=(change/totalInvestment)*100||0;
+        let name=user.username;
+        console.log({
+            stocks: allStocks, balance: user.balance,
+            totalInvested: totalInvestment,
+            currentValue: currentValueStocks,
+            totalProfit:profitPerc,
+            change:change,
+            name:name,
+
+        })
         res.status(200).json({
             stocks: allStocks, balance: user.balance,
             totalInvested: totalInvestment,
             currentValue: currentValueStocks,
             totalProfit:profitPerc,
-            change:change
+            change:change,
+            name:name,
 
         })
 

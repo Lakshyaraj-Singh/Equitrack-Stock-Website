@@ -41,9 +41,7 @@ const userSchema=new mongoose.Schema({
   profile:{
     type:String,
   },
-  fullname:{
-    type:String,
-  },
+  
   balance:{
     type:Number,
     default:100000
