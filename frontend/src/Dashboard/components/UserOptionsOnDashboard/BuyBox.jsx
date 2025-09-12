@@ -71,7 +71,7 @@ export const BuyBox = ({ stock, oncloseModal }) => {
                     {/* stock name and symbol */}
                     <div className="flex justify-between rounded-2xl  bg-blue-100 w-full  p-3">
 
-                        <div className=" flex gap-2 flex-col "><h1 className="font-extrabold text-2xl">{stock.T} </h1>  <p className="text-sm text-gray-500">Apple.Inc</p></div>
+                        <div className=" flex gap-2 flex-col "><h1 className="font-extrabold text-2xl">{stock.T} </h1>  <p className="text-sm text-gray-500">Buying</p></div>
                         <div className="flex gap-2 flex-col"> <h1 className="font-bold text-2xl">${stock.c}</h1>
                             {change > 0 ? <p   ><span className="bg-black  px-5 rounded-3xl text-xs text-white font-semibold">{Math.abs(change)}$</span> <span className="text-green-500 font-semibold text-xs">+{percentageChange}%</span></p> : <p ><span className="bg-black font-semibold  px-5 rounded-3xl text-xs text-white">{Math.abs(change)}$</span> <span className="text-red-500 text-xs font-semibold">{percentageChange}%</span></p>}</div>
                     </div>
