@@ -10,7 +10,9 @@ router.post("/particularStock",stock.particularStock)
 
 
 //Stock Actions
-router.post("/buyStock",Auth,stock.buyingStock)
+router.post("/buyStock",Auth,stock.buyingStock);
+router.post("/sellStock",Auth,stock.sellingStock);
+router.get("/holdings",Auth,stock.holdings);
 router.get("/portfolio",Auth,stock.userPortfolio);
 
 export default router;
