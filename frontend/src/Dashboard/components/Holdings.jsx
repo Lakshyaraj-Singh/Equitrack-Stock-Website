@@ -1,6 +1,19 @@
-import { holdings } from "../../data/data"
+import { useEffect, useState } from "react";
 
+import {useTrading} from "../../ContextApi"
+import { holdingsUser } from "../../USERAPIS/StockApi";
 export const Holdings = () => {
+   let {tradingData}=useTrading();
+   let [holdings,setHoldings]=useState([]);
+  useEffect(() => {
+     const loadHoldings=async()=>{
+       let res=await holdingsUser();
+       console.log(res.data);
+       setHoldings(res.data);
+     }
+     loadHoldings();
+  }, [tradingData])
+  
   return (
     <div className="bg-gray-600  h-full px-7 py-2 ">
        <h1 className="text-center text-4xl font-thin  text-white mb-2">Holdings</h1>
@@ -27,19 +40,22 @@ export const Holdings = () => {
     </thead>
     <tbody className="text-xs" >
        {holdings.map((stock,idx)=>{
-          const currValue=stock.price*stock.qty;
-          const isProfit=currValue-stock.avg*stock.qty>0.0;
-          
+          // symbol: allStocks[i].symbol,
+          // avgPrice: allStocks[i].avgBuyPrice,
+          // quantity: allStocks[i].quantity,
+          // currValue: response[i].c * quantity,
+          // change: currValue - avgPrice * quantity,
+          // isProfit: change > 0 ? true : false
 
       return(<tr>
-        <th>{stock.name}</th>
-        <td>{stock.qty}</td>
-        <td>{stock.avg.toFixed(2)}</td>
+        <th>{stock.symbol}</th>
+        <td>{stock.quantity}</td>
+        <td>{stock.avgPrice.toFixed(2)}</td>
         <td>{stock.price.toFixed(2)}</td>
-        <td>{currValue.toFixed(2)}</td>
-        <td>{(currValue-stock.avg*stock.qty).toFixed(2)}</td>
-        <td className={isProfit? "text-green-700 font-medium":"text-red-500 font-medium" }>{stock.net}</td>
-        <td className={stock.isLoss?"text-red-500 font-medium":"text-green-700 font-medium"}>{stock.day}</td>
+        <td>LTP</td>
+        <td>{stock.currValue.toFixed(2)}</td>
+        <td className={stock.isProfit? "text-green-700 font-medium":"text-red-500 font-medium" }>{((stock.change)/stock.avgPrice*stock.quantity)*100}</td>
+        <td className={"text-red-500 font-medium"}>l</td>
       </tr>)
        })}
       
