@@ -52,6 +52,29 @@ export const buyingStocksAction = async (data) => {
         return error.response;
     }
 }
+export const sellingStocksAction = async (data) => {
+     let token=localStorage.getItem("token")
+     console.log(token)
+    try {
+        let res = await api.post("/sellingStock", data,{headers:{'Authorization':`Bearer ${token}`}});
+        return res;
+    }
+    catch (error) {
+        return error.response;
+    }
+}
+
+export const holdingsUser=async (data) => {
+    let token=localStorage.getItem("token")
+    
+   try {
+       let res = await api.get("/holdings",{headers:{'Authorization':`Bearer ${token}`}});
+       return res;
+   }
+   catch (error) {
+       return error.response;
+   }
+}
 
 export const portfolio=async (data) => {
     let token=localStorage.getItem("token")
