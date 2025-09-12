@@ -232,3 +232,35 @@ export const userPortfolio = async (req, res) => {
         console.log(error.message);
     }
 }
+
+export const holdings=async(req,res)=>{
+   try{
+      let user=await User.findById(req.user);
+      if(!user) return res.status(404).json({message:"User Not Found"});
+      let allStocks=user.stocks;
+      const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+        if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
+        let stockToSee = allStocks.map((stocks)=>{stocks.symbol})
+        const response = responseAll.results.filter(stock => stockToSee.includes(stock.T));
+        
+        let holdingsData=[];
+        for(let i=0;i<stockToSee.length;i++){
+             holdingsData.push({
+                symbol:allStocks[i].symbol,
+                avgPrice:allStocks[i].avgBuyPrice,
+                quantity:allStocks[i].quantity,
+                currValue:response[i].c*quantity,
+                change:currValue-avgPrice*quantity,
+                isProfit: change>0? true:false
+
+             })
+        } 
+        res.status(200).json(holdingsData)
+
+        
+   }
+   catch(error){
+    res.status(500).json({ message: error.message });
+    console.log(error.message);
+   }
+}
