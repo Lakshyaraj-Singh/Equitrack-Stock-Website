@@ -290,11 +290,29 @@ export const holdings = async (req, res) => {
 
             })
         }
-        res.status(200).json(holdingsData)
+        return res.status(200).json(holdingsData)
 
 
     }
     catch (error) {
+        res.status(500).json({ message: error.message });
+        console.log(error.message);
+    }
+}
+
+
+export const sellingStockData=async(req,res)=>{
+    try{
+        const stockName=req.params
+        console.log(stockName)
+        let user = await User.findById(req.user);
+        if (!user) return res.status(404).json({ message: "User Not Found" });
+        let Stock = user.stocks.filter((stock)=>stock.symbol==stockName);
+        if (!Stock) return res.status(404).json({ message: "Stock Not Found" });
+        return res.status(200).json(Stock)
+        
+    }
+    catch(error){
         res.status(500).json({ message: error.message });
         console.log(error.message);
     }

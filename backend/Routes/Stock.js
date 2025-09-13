@@ -14,5 +14,5 @@ router.post("/buyStock",Auth,stock.buyingStock);
 router.post("/sellStock",Auth,stock.sellingStock);
 router.get("/holdings",Auth,stock.holdings);
 router.get("/portfolio",Auth,stock.userPortfolio);
-
+router.get("/userStockP/:stockName",Auth,stock.sellingStockData)
 export default router;
