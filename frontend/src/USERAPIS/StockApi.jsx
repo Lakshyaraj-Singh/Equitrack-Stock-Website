@@ -56,7 +56,8 @@ export const sellingStocksAction = async (data) => {
      let token=localStorage.getItem("token")
      console.log(token)
     try {
-        let res = await api.post("/sellingStock", data,{headers:{'Authorization':`Bearer ${token}`}});
+        
+        let res = await api.post("/sellStock", data,{headers:{'Authorization':`Bearer ${token}`}});
         return res;
     }
     catch (error) {

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import { userStockD } from "../../../USERAPIS/StockApi";
+import { sellingStocksAction, userStockD } from "../../../USERAPIS/StockApi";
+import toast from "react-hot-toast";
+import { useTrading } from "../../../ContextApi";
 export const SellBox = ({stock,oncloseModal}) => {
   let [userSt,setUserSt]=useState({});
   let [quantity,setQuantity]=useState(1);
   let [totalValue,setTotalValue]=useState(500);
-  
+  let { loadPortfolio } = useTrading()
     let modalRef=useRef();
     useEffect(() => {
         const loadUsersStockData=async()=>{
@@ -38,6 +40,33 @@ export const SellBox = ({stock,oncloseModal}) => {
 
         }
     }
+
+    const handleBuyStock = async () => {
+      let symbol = ""
+      let data = {
+          symbol: stock.T,
+          quantity: quantity,
+          totalValue: totalValue.toFixed(2)
+      }
+      let res = await sellingStocksAction(data);
+      if (res.status == 200) {
+          let resL = await loadPortfolio();
+         
+              toast.success(`Congratulations Sold ${symbol}`)
+              
+          
+         
+
+      }
+      else {
+          toast.error("Error Occured");
+         
+          
+      }
+      oncloseModal();
+      console.log(res)
+  }
+
     let change = (stock?.c - stock?.o).toFixed(2);
 
     let percentageChange = ((change / stock?.o) * 100).toFixed(2);
@@ -90,7 +119,7 @@ export const SellBox = ({stock,oncloseModal}) => {
                     <button onClick={()=>{oncloseModal()}} className="p-2 border-[1px] border-gray-400 rounded-lg  w-full">Cancel</button>
                     {canBuy?
                    
-                    <button className="p-2  w-full bg-red-600 text-white rounded-lg font-semibold ">Sell {quantity} Shares</button>
+                    <button className="p-2  w-full bg-red-600 text-white rounded-lg font-semibold " onClick={handleBuyStock}>Sell {quantity} Shares</button>
                   : <button className="p-2  w-full bg-red-300 text-white rounded-lg font-semibold  " disabled>Sell {quantity} Shares</button>
                   }
                     
