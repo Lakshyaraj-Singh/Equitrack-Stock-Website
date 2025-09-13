@@ -6,7 +6,7 @@ export const SellBox = ({stock,oncloseModal}) => {
   
     let modalRef=useRef();
     useEffect(() => {
-      
+        
         console.log(stock);
     
       
@@ -77,7 +77,7 @@ export const SellBox = ({stock,oncloseModal}) => {
                   {/* actionbuttons */}
                   <div className="text-xs w-full flex justify-evenly gap-1">
                     <button onClick={()=>{oncloseModal()}} className="p-2 border-[1px] border-gray-400 rounded-lg  w-full">Cancel</button>
-                    <button className="p-2  w-full bg-red-600 text-white rounded-lg ">Sell Shares</button>
+                    <button className="p-2  w-full bg-red-600 text-white rounded-lg font-semibold ">Sell {quantity} Shares</button>
                   </div>
                 </div>
 

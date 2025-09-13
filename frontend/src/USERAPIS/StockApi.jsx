@@ -87,3 +87,15 @@ export const portfolio=async (data) => {
        return error.response;
    }
 }
+
+
+export const userStockD=async(stname)=>{
+
+try {
+    let res = await api.get(`/userStockP/${stname}`,{headers:{'Authorization':`Bearer ${token}`}});
+    return res;
+}
+catch (error) {
+    return error.response;
+}
+}
