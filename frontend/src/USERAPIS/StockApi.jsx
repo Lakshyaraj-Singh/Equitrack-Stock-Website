@@ -90,9 +90,10 @@ export const portfolio=async (data) => {
 
 
 export const userStockD=async(stname)=>{
-
+    let token=localStorage.getItem("token")
 try {
     let res = await api.get(`/userStockP/${stname}`,{headers:{'Authorization':`Bearer ${token}`}});
+
     return res;
 }
 catch (error) {
