@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { stockDetail } from "../../../USERAPIS/StockApi"
+import { stockDetail, StockGraph } from "../../../USERAPIS/StockApi"
 import Highcharts from 'highcharts';
 import 'highcharts/modules/exporting';
 import 'highcharts/modules/hollowcandlestick';
@@ -15,7 +15,8 @@ export const StockBox = ({ stock, oncloseModal }) => {
         setStock(res.data);
         console.log(res.data)
 
-
+        let resGraph=await StockGraph(stockD?.data1?.symbol)
+        let chartJsonData= await resGraph.data.json();
         const transformedData = chartJsonData.map(item => [
           new Date(item.date).getTime(),
           parseFloat(item.open),
