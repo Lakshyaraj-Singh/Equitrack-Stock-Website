@@ -101,3 +101,14 @@ catch (error) {
     return error.response;
 }
 }
+export const StockGraph=async(stname)=>{
+ 
+try {
+    let res = await api.get("/StockSnapshot");
+
+    return res;
+}
+catch (error) {
+    return error.response;
+}
+}
