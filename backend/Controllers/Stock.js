@@ -100,7 +100,7 @@ export const chartMonth = async (req, res) => {
         const cacheKey = `particular-${stockName}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) return res.status(200).json(cachedData)
-        const response = await rest.getStocksAggregates(stockName, 1, "day", "2024-08-01", "2024-08-29");
+        const response = await rest.getStocksAggregates(stockName, 1, "day", "2024-08-01", "2025-09-09");
         cache.set(cacheKey, response);
         return res.status(200).json(response);
 
@@ -195,11 +195,13 @@ export const buyingStock = async (req, res) => {
 export const sellingStock = async (req, res) => {
     try {
         let { symbol, quantity, totalValue } = req.body;
+        
         quantity = parseInt(quantity);
         totalValue = parseInt(totalValue);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let stock = user.stocks.find(stock => stock.symbol == symbol);
+     
         if (!stock) return res.status(404).json({ message: "No such stock found" });
         let newQty = stock.quantity - quantity;
         if (newQty >= 0) {
@@ -303,12 +305,13 @@ export const holdings = async (req, res) => {
 
 export const sellingStockData=async(req,res)=>{
     try{
-        const stockName=req.params
-        console.log(stockName)
+        const {stockName}=req.params;
+        
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let Stock = user.stocks.filter((stock)=>stock.symbol==stockName);
-        if (!Stock) return res.status(404).json({ message: "Stock Not Found" });
+        if (Stock.length<=0) return res.status(404).json({ message: "Stock Not Found" });
+       
         return res.status(200).json(Stock)
         
     }
