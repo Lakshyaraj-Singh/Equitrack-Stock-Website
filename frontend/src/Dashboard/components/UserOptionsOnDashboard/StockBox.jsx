@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { stockDetail, StockGraph } from "../../../USERAPIS/StockApi"
-import Highcharts from 'highcharts';
-import 'highcharts/modules/exporting';
+import Highcharts from 'highcharts/highstock';
 import 'highcharts/modules/hollowcandlestick';
+
+
 export const StockBox = ({ stock, oncloseModal }) => {
   let [stockD, setStock] = useState(null)
   let [chartData, setChartData] = useState([])
@@ -13,21 +14,26 @@ export const StockBox = ({ stock, oncloseModal }) => {
       try {
         const res = await stockDetail(stock);
         setStock(res.data);
-        console.log(res.data)
+        
+          console.log("GRAPHNAME:",res.data?.data1?.symbol)
+           let resGraph=await StockGraph(res.data.data1?.symbol)
+           let chartJsonData= resGraph.data;
+        
 
-        let resGraph=await StockGraph(stockD?.data1?.symbol)
-        let chartJsonData= await resGraph.data.json();
-        const transformedData = chartJsonData.map(item => [
-          new Date(item.date).getTime(),
-          parseFloat(item.open),
-          parseFloat(item.high),
-          parseFloat(item.low),
-          parseFloat(item.close)
+        console.log("dddddd",chartJsonData.results)
+        if (chartJsonData.results) {
+        const transformedData = chartJsonData.results.map(item => [
+        
+          item.t,    // timestamp 
+          item.o,    // open 
+          item.h,    // high 
+          item.l,    
+          item.c 
         ]);
-
+        console.log(transformedData)
         setChartData(transformedData);
       }
-
+    }
       catch (error) {
         console.log(error)
       }
@@ -41,7 +47,44 @@ export const StockBox = ({ stock, oncloseModal }) => {
   useEffect(() => {
     if (chartData.length > 0) {
       setTimeout(() => {
-        Highcharts.chart('stock-chart-container', {
+        Highcharts.StockChart('stock-chart-container', {
+          rangeSelector: {
+            buttons: [{
+              type: 'day',
+              count: 1,
+              text: '1D'
+            }, {
+              type: 'day',
+              count: 7,
+              text: '7D'
+            }, {
+              type: 'month',
+              count: 1,
+              text: '1M'
+            }, {
+              type: 'month',
+              count: 3,
+              text: '3M'
+            }, {
+              type: 'year',
+              count: 1,
+              text: '1Y'
+            }, {
+              type: 'all',
+              text: 'All'
+            }],
+            selected: 2 
+          },
+        
+         
+          navigator: {
+            enabled: true
+          },
+        
+        
+          scrollbar: {
+            enabled: true
+          },
           title: {
             text: `${stock} Stock Chart`,
             style: {
@@ -118,8 +161,8 @@ export const StockBox = ({ stock, oncloseModal }) => {
   if (change) { let percentageChange = ((change / stockD?.data1?.open) * 100).toFixed(2); }
   let percentageChange = ((change / stockD?.data1?.open) * 100).toFixed(2);
   return (
-    <div className="w-screen h-screen absolute z-10 place-content-center place-items-center backdrop-blur-xs inset-0">
-      <div className="bg-white w-[50%] flex flex-col p-3 mb-20 shadow-2xl shadow-black rounded ">
+    <div className="w-screen overflow-auto h-screen absolute z-10 place-content-center place-items-center backdrop-blur-xs inset-0">
+      <div className="bg-white w-[70%] flex flex-col p-3 mb-20 shadow-2xl shadow-black rounded ">
         <i onClick={oncloseModal} class="fa-solid fa-xmark self-end cursor-pointer"></i>
         <div className="flex justify-between  rounded-2xl  bg-blue-50 p-3 text-sm">
           <div>
@@ -165,7 +208,7 @@ export const StockBox = ({ stock, oncloseModal }) => {
           </div>
         </div>
         <div className="mt-6">
-          <h2 className="text-lg font-semibold mb-3">Price Chart (1 Month)</h2>
+          <h2 className="text-lg font-semibold mb-3">Price Chart </h2>
           <div
             id="stock-chart-container"
             className="w-full border rounded-lg"

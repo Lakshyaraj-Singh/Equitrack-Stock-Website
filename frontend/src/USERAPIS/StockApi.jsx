@@ -104,7 +104,7 @@ catch (error) {
 export const StockGraph=async(stname)=>{
  
 try {
-    let res = await api.get("/StockSnapshot");
+    let res = await api.post("/StockSnapshot",{stockName:stname});
 
     return res;
 }
