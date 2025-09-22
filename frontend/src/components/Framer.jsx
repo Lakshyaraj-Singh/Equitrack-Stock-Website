@@ -3,7 +3,7 @@ import { motion,useInView, useAnimation } from "motion/react"
 import React, { useRef, useEffect } from 'react';
 export const RevealFade = ({ children, delay = 0, duration = 0.6 }) => {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const isInView = useInView(ref, { once: true});
     const controls = useAnimation();
   
     useEffect(() => {
@@ -22,6 +22,35 @@ export const RevealFade = ({ children, delay = 0, duration = 0.6 }) => {
           visible: { 
             opacity: 1, 
             y: 0,
+            transition: { duration, delay }
+          }
+        }}
+      >
+        {children}
+      </motion.div>
+    );
+  };
+export const Fade = ({ children, delay = 0, duration = 0.6 }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true});
+    const controls = useAnimation();
+  
+    useEffect(() => {
+      if (isInView) {
+        controls.start("visible");
+      }
+    }, [isInView, controls]);
+  
+    return (
+      <motion.div
+        ref={ref}
+        animate={controls}
+        initial="hidden"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { 
+            opacity: 1, 
+            
             transition: { duration, delay }
           }
         }}
