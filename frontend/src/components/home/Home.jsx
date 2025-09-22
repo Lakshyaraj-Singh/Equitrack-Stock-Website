@@ -21,7 +21,10 @@ export const Home = () => {
     <Learn/>
     
     <HeroLeft/>
+    <RevealFade duration={1.2}>
+
     <Video/>
+    </RevealFade>
   
     </div>
   </>

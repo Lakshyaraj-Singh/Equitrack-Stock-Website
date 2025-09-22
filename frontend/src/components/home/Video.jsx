@@ -1,5 +1,6 @@
 import React from 'react'
 import { CallAction } from '../CallAction'
+import { Fade } from '../Framer'
 
 export const Video = () => {
   return (
@@ -9,7 +10,8 @@ export const Video = () => {
        </video>
        <div className='absolute top-1/2  text-white  left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
 
-       <CallAction/>
+       <Fade duration={1.7}><CallAction/>
+        </Fade>
        </div>
        <div className='absolute h-fit md:h-30  md:w-full place-items-center pt-11  bottom-0 left-0 bg-white'>
         <img className='md:h-13  h-7' src="\pressLogos.png" alt="" />
