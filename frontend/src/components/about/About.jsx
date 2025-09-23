@@ -1,15 +1,19 @@
 import React from 'react'
 import {People} from './People'
+import { Fade, RevealFade } from '../Framer'
 export const About = () => {
     return (
         <div>
             
             <div className='h-56 place-items-center place-content-center md:w-2/3 m-auto'>
+           <RevealFade duration={1}>
 
             <h1 className='text-accent-content font-semibold text-center text-xl  md:text-3xl'>We pioneered the discount broking model in India.
                 Now, we are breaking ground with our technology.</h1>
+           </RevealFade>
             </div>
-            <div className='flex md:m-5 p-7 md:p-15 justify-between '>
+            <Fade duration={1.2}>
+                  <div className='flex md:m-5 p-7 md:p-15 justify-between '>
                 <div className="w-1/2 px-4 flex flex-col bg-amber-600 gap-7 leading-6">
                     <p>We kick-started operations on the 15th of August, 2010 with the goal of breaking all barriers that traders and investors face in India in terms of cost, support, and technology. We named the company Zerodha, a combination of Zero and "Rodha", the Sanskrit word for barrier.</p>
                     <p>Today, our disruptive pricing models and in-house technology have made us the biggest stock broker in India.</p>
@@ -22,6 +26,8 @@ export const About = () => {
                 </div>
 
             </div>
+            </Fade>
+          
               <People/>
         </div>
     )

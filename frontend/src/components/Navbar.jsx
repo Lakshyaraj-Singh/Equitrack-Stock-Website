@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from "react-router"
+import { Fade, RevealFade } from './Framer'
 export const Navbar = () =>{
   const navlinks=( <>
     <li><Link to="/signup" >Signup </Link></li>
@@ -13,7 +14,7 @@ export const Navbar = () =>{
   return (
     <div className="navbar relative  py-3 px-2 bg-base-100 shadow-sm">
     <div className="navbar-start">
-          <Link to="/"><img className=' md:hidden w-56 absolute top-2' src="/equitrack-high-resolution-logo-transparent (1).png"  alt="equitrack" /></Link>  
+        <Fade><Link to="/"><img className=' md:hidden w-56 absolute top-2' src="/equitrack-high-resolution-logo-transparent (1).png"  alt="equitrack" /></Link>  </Fade>  
       <div className="dropdown  ">
         
 
@@ -27,7 +28,8 @@ export const Navbar = () =>{
           {navlinks}
         </ul>
       </div>
-<Link to="/"><img className='hidden lg:block' src="/equitrack-high-resolution-logo-transparent (1).png" style={{width:"30%"}} alt="EquiTack" /></Link>
+<Fade duration={0.7}><Link to="/"><img className='hidden lg:block' src="/equitrack-high-resolution-logo-transparent (1).png" style={{width:"30%"}} alt="EquiTack" /></Link>
+  </Fade>
     </div>
     <div className="navbar-end  md:justify-center hidden lg:flex">
       <ul className="menu space-x-4 font-medium text-[15px]  menu-horizontal px-1">

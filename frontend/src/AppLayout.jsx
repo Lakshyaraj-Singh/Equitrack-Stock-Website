@@ -16,7 +16,7 @@ export const AppLayout = () => {
       <Navbar />
       <Outlet />
 
-      <Fade duration={1}><Footer /></Fade>
+      <Fade duration={1.2}><Footer /></Fade>
     </div>
   )
 }
