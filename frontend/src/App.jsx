@@ -55,7 +55,7 @@ function App() {
         },
         {
           path:"/login",
-          element:<Login />
+          element:<TradingProvider><Login /></TradingProvider>
         }
       ])
     },

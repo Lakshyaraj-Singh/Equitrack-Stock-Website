@@ -5,7 +5,7 @@ import { portfolio } from './USERAPIS/StockApi';
 const TradingContext = createContext();
 
 export const TradingProvider =  ({ children }) => {
-  
+   let [isLoading,setIsLoading]=useState(false)
     const [tradingData, setTradingData] = useState({
         name:"",
         balance: 0,
@@ -60,7 +60,9 @@ export const TradingProvider =  ({ children }) => {
         <TradingContext.Provider value={{
             tradingData,
             setTradingData,
-            loadPortfolio
+            loadPortfolio,
+            setIsLoading,
+            isLoading
         }}>
             {children}
         </TradingContext.Provider>
