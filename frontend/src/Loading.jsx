@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import {  UseAnimationFrame } from "./oadingAni";
 
-export const LoginLoading=()=>{
+
+export const LoginLoading=({message})=>{
     useEffect(() => {
-        // Save current overflow style
+        
         const originalOverflow = document.body.style.overflow;
         
-        // Disable scrolling on body
+      
         document.body.style.overflow = 'hidden';
         
-        // Re-enable scrolling when component unmounts
+        
         return () => {
           document.body.style.overflow = originalOverflow;
         };
@@ -30,10 +31,10 @@ export const LoginLoading=()=>{
           color: 'white',
           fontSize: '24px'
         }}>
-          <div className="text-black font-mono">
-           <UseAnimationFrame/>
-            <h1>Logging in...</h1>
-            <div className="text-sm font-bold">EquiTrack</div>
+          <div className="text-black  place-content-center place-items-center font-mono">
+       <UseAnimationFrame/>
+            <h1 className="mt-5">{message}...</h1>
+        <img    className="mt-5 w-86" src="/equitrack-high-resolution-logo-transparent (1).png"  alt="" />
           </div>
         </div>
       );

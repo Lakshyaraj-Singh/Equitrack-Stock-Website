@@ -91,3 +91,5 @@ export const LeftReveal=({children,duration=0.5,delay=0})=>{
         </motion.div>
     )
 }
+
+
