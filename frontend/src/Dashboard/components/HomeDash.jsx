@@ -10,7 +10,8 @@ export const HomeDash = () => {
         gutter={8}
         containerClassName=""
         containerStyle={{}}
-        toasterId="default" />
+        toasterId="default"
+         />
       <Topboard/>
       
       <Outlet/>

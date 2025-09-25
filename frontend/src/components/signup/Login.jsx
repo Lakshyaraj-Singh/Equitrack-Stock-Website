@@ -20,11 +20,11 @@ export const Login = () => {
       console.log('Form submitted:', values);
       let res=await login(values);
       if(res.status==200){
-       toast.success("Login Successfull...")
-       setTimeout(()=>{
-         navigate("/dashboard");
-         setIsLoading(false)
-        },2000)
+        setTimeout(()=>{
+          navigate("/dashboard");
+          setIsLoading(false)
+        },1500)
+        toast.success("Login Successfull...")
        
         console.log(res)
 
@@ -32,10 +32,10 @@ export const Login = () => {
       }
 
       else{
-        toast.error("Authentication Problem")
         setTimeout(()=>{
           setIsLoading(false);
-        },15000)
+        },1500)
+        toast.error("Authentication Problem")
         console.log(res)
       }
       
@@ -45,7 +45,7 @@ export const Login = () => {
     
   });
   return (<>
-    {isLoading&& <LoginLoading/>}
+    {isLoading&& <LoginLoading message={"Logging In"}/>}
 
     <div className="flex items-center justify-center bg-sky-100">
       <div className="card w-96 bg-base-100 shadow-xl mt-10 mb-10">

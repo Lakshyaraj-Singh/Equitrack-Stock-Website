@@ -51,7 +51,7 @@ function App() {
         },
         {
           path:"/signup",
-          element:<Signup />
+          element:<TradingProvider><Signup /></TradingProvider>
         },
         {
           path:"/login",
