@@ -2,10 +2,14 @@ import { useEffect, useState } from "react"
 import { stockDetail, StockGraph } from "../../../USERAPIS/StockApi"
 import Highcharts from 'highcharts/highstock';
 import 'highcharts/modules/hollowcandlestick';
+import { useTrading } from "../../../ContextApi";
+import { LoginLoading } from "../../../Loading";
 
 
 export const StockBox = ({ stock, oncloseModal }) => {
-   
+  let [WantChart,setWantChart]=useState(false)
+  let [Graph,setGraph]=useState(null)
+   let {setIsLoading,isLoading}=useTrading();
   let [stockD, setStock] = useState(null)
   let [chartData, setChartData] = useState([])
   console.log(stock)
@@ -13,36 +17,24 @@ export const StockBox = ({ stock, oncloseModal }) => {
     const fetchData = async () => {
 
       try {
+        setIsLoading(true)
         const res = await stockDetail(stock);
         setStock(res.data);
         
-          console.log("GRAPHNAME:",res.data?.data1?.symbol)
-           let resGraph=await StockGraph(res.data.data1?.symbol)
-           let chartJsonData= resGraph.data;
+          setGraph(res.data?.data1?.symbol)
         
-
-        console.log("dddddd",chartJsonData.results)
-        if (chartJsonData.results) {
-        const transformedData = chartJsonData.results.map(item => [
-        
-          item.t,    // timestamp 
-          item.o,    // open 
-          item.h,    // high 
-          item.l,    
-          item.c 
-        ]);
-        console.log(transformedData)
-        setChartData(transformedData);
-      }
-    }
+        setIsLoading(false)}
+      
+    
       catch (error) {
         console.log(error)
-      }
+       setIsLoading(false)}
     }
-
+    
+  
     fetchData();
 
-  }, [stock])
+ }, [stock]);
 
 
   useEffect(() => {
@@ -131,6 +123,27 @@ export const StockBox = ({ stock, oncloseModal }) => {
       }, 100);
     }
   }, [chartData, stock]);
+
+  const seeChart=async()=>{
+    setWantChart(true)
+    let resGraph=await StockGraph(Graph)
+    let chartJsonData= resGraph.data;
+ 
+ 
+ console.log("dddddd",chartJsonData.results)
+ if (chartJsonData.results) {
+ const transformedData = chartJsonData.results.map(item => [
+ 
+   item.t,    // timestamp 
+   item.o,    // open 
+   item.h,    // high 
+   item.l,    
+   item.c 
+ ]);
+ console.log(transformedData)
+ setChartData(transformedData);
+
+  }}
   let dividendYield = 0;
   let peRatio = "N/A";
 
@@ -161,7 +174,9 @@ export const StockBox = ({ stock, oncloseModal }) => {
   let change = (stockD?.data1?.close - stockD?.data1?.open).toFixed(2);
   if (change) { let percentageChange = ((change / stockD?.data1?.open) * 100).toFixed(2); }
   let percentageChange = ((change / stockD?.data1?.open) * 100).toFixed(2);
-  return (
+  return (<>
+  {isLoading&& <LoginLoading message={` Fetching Stock Details!!`}/>}
+  
     <div className="w-screen overflow-auto h-screen absolute z-10 place-content-center place-items-center backdrop-blur-xs inset-0">
       <div className="bg-white w-[70%] flex flex-col p-3 mb-20 shadow-2xl shadow-black rounded ">
         <i onClick={oncloseModal} class="fa-solid fa-xmark self-end cursor-pointer"></i>
@@ -208,6 +223,8 @@ export const StockBox = ({ stock, oncloseModal }) => {
 
           </div>
         </div>
+        <button className="btn" onClick={()=>seeChart()}>See History of Stock</button>
+        {WantChart&&
         <div className="mt-6">
           <h2 className="text-lg font-semibold mb-3">Price Chart </h2>
           <div
@@ -221,8 +238,8 @@ export const StockBox = ({ stock, oncloseModal }) => {
               </div>
             )}
           </div>
-        </div>
+        </div>}
       </div>
     </div>
-  )
+    </>)
 }
