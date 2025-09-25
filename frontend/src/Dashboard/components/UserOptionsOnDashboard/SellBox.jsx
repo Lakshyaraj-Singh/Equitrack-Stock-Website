@@ -3,7 +3,9 @@ import { useRef } from "react";
 import { sellingStocksAction, userStockD } from "../../../USERAPIS/StockApi";
 import toast from "react-hot-toast";
 import { useTrading } from "../../../ContextApi";
+import { LoginLoading } from "../../../Loading";
 export const SellBox = ({stock,oncloseModal}) => {
+   let {setIsLoading,isLoading}=useTrading();
   let [userSt,setUserSt]=useState({});
   let [quantity,setQuantity]=useState(1);
   let [totalValue,setTotalValue]=useState(500);
@@ -48,10 +50,12 @@ export const SellBox = ({stock,oncloseModal}) => {
           quantity: quantity,
           totalValue: totalValue.toFixed(2)
       }
+      setIsLoading(true)
       let res = await sellingStocksAction(data);
       if (res.status == 200) {
+          
           let resL = await loadPortfolio();
-         
+          setIsLoading(false)
               toast.success(`Congratulations Sold ${symbol}`)
               
           
@@ -59,6 +63,7 @@ export const SellBox = ({stock,oncloseModal}) => {
 
       }
       else {
+        setIsLoading(false)
           toast.error("Error Occured");
          
           
@@ -74,6 +79,8 @@ export const SellBox = ({stock,oncloseModal}) => {
     let gainL=(quantity*stock.c-userSt.avgBuyPrice*quantity).toFixed(2);
     let gainLp=(Math.abs(gainL)/userSt.avgBuyPrice*quantity)*100
   return (
+    <> {isLoading&& <LoginLoading message={` Selling ${stock.T}!!`}/>}
+    
     <div ref={modalRef} onClick={close} className="w-screen h-screen  backdrop-blur-xs place-content-center place-items-center absolute  inset-0 z-10 rounded">
         
         <div className="bg-white w-[40%] mb-20 shadow-2xl shadow-black">
@@ -129,5 +136,5 @@ export const SellBox = ({stock,oncloseModal}) => {
 
             </div>
     </div>
-  )
+    </>)
 }

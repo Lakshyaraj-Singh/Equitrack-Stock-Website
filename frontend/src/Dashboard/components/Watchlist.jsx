@@ -12,7 +12,9 @@ import { BuyBox } from "./UserOptionsOnDashboard/BuyBox";
 import { SellBox } from "./UserOptionsOnDashboard/SellBox";
 import { GraphBox } from "./UserOptionsOnDashboard/GraphBox";
 import { StockBox } from "./UserOptionsOnDashboard/StockBox";
+import { useTrading } from "../../ContextApi";
 export const Watchlist = ({data}) => {
+  let {setIsLoading,isLoading}=useTrading();
  const realStocks=data.data;
   let stockId;
   const [activeModal, setActiveModal] = useState(null);

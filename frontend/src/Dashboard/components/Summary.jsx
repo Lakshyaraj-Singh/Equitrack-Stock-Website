@@ -1,8 +1,9 @@
 import { holdings } from "../../data/data"
 import {useTrading} from "../../ContextApi"
 import { useEffect } from "react";
+import { LoginLoading } from "../../Loading";
 export const Summary = () => {
-   
+  let {isLoading}=useTrading();
     let {tradingData}=useTrading();
     
     console.log(tradingData)
@@ -27,6 +28,7 @@ export const Summary = () => {
     }, [tradingData])
     
   return (
+   <> {isLoading&& <LoginLoading message={` Fetching Account Details!!`}/>}
     <div className="flex flex-col pl-5  h-full   bg-amber-50">
         <div className="h-3/5 place-content-center  border-b-[1px]">
             <h1 className="text-3xl">Hi ,{tradingData.name}!!</h1>
@@ -58,5 +60,5 @@ export const Summary = () => {
                 )}
         </div>
     </div>
-  )
+    </>)
 }

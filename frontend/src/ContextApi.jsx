@@ -23,6 +23,7 @@ export const TradingProvider =  ({ children }) => {
 
         try {
             setTradingData(prev => ({ ...prev, loading: true }))
+            setIsLoading(true)
             let res = await portfolio();
             if (res.status == 200) {
                 setTradingData({
@@ -38,6 +39,7 @@ export const TradingProvider =  ({ children }) => {
                 })
                console.log(res)
             }
+            setIsLoading(false)
 
         }
         catch (error) {
@@ -45,6 +47,7 @@ export const TradingProvider =  ({ children }) => {
             setTradingData(prev => ({
                 ...prev, error: error.message, loading: false
             }))
+            setIsLoading(false)
         }
     }
 

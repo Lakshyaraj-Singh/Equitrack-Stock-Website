@@ -4,7 +4,9 @@ import { useTrading } from "../../../ContextApi"
 
 import toast from "react-hot-toast";
 import { buyingStocksAction } from "../../../USERAPIS/StockApi";
+import { LoginLoading } from "../../../Loading";
 export const BuyBox = ({ stock, oncloseModal }) => {
+    let {setIsLoading,isLoading}=useTrading();
     let { loadPortfolio } = useTrading()
     let [quantity, setQuantity] = useState(1);
 
@@ -29,10 +31,11 @@ export const BuyBox = ({ stock, oncloseModal }) => {
             quantity: quantity,
             totalCost: totalCost.toFixed(2)
         }
+        setIsLoading(true)
         let res = await buyingStocksAction(data);
         if (res.status == 200) {
             let resL = await loadPortfolio();
-           
+                setIsLoading(false)
                 toast.success(`Congratulations Bought ${symbol}`)
                 
             
@@ -40,6 +43,7 @@ export const BuyBox = ({ stock, oncloseModal }) => {
 
         }
         else {
+            setIsLoading(false)
             toast.error("Error Occured");
            
         }
@@ -63,6 +67,9 @@ export const BuyBox = ({ stock, oncloseModal }) => {
     }
 
     return (
+        <>
+        {isLoading&& <LoginLoading message={`Purchasing ${stock.T}!!`}/>}
+        
         <div ref={modalRef} onClick={close} className="w-screen h-screen  backdrop-blur-xs place-content-center place-items-center absolute  inset-0 z-10 rounded">
 
             <div className="bg-white w-[40%] mb-20 shadow-2xl shadow-black">
@@ -107,5 +114,5 @@ export const BuyBox = ({ stock, oncloseModal }) => {
 
             </div>
         </div>
-    )
+        </>)
 }

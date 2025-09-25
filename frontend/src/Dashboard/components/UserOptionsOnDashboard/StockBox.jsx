@@ -5,6 +5,7 @@ import 'highcharts/modules/hollowcandlestick';
 
 
 export const StockBox = ({ stock, oncloseModal }) => {
+   
   let [stockD, setStock] = useState(null)
   let [chartData, setChartData] = useState([])
   console.log(stock)
