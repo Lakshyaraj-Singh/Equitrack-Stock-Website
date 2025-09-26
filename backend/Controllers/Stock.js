@@ -97,6 +97,7 @@ export const particularDetailStock = async (req, res) => {
 export const chartMonth = async (req, res) => {
     try {
         let { stockName } = req.body;
+        console.log("coming ChartMonth",stockName)
         const cacheKey = `particular-${stockName}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) return res.status(200).json(cachedData)
@@ -235,9 +236,17 @@ export const userPortfolio = async (req, res) => {
         if (!user) return res.status(404).json({ message: "User Not Found" });
         const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
         let allStocks = user.stocks;
-        let totalInvestment = user.stocks.reduce((sum, stock) => { sum + stock.totalInvested }, 0)
-        let stockNames = allStocks.map(stocks => stocks.T)
-        let currentValueStocks = responseAll.results.filter(stock => stockNames.includes(stock.T)).reduce((sum, cur) => sum + cur, 0)
+        let totalInvestment = user.stocks.reduce((sum, stock) => sum + stock.totalInvested, 0);
+        let stockNames = allStocks.map(stock => stock.symbol);
+        let priceBySymbol = new Map();
+        responseAll.results.forEach(stock => {
+          priceBySymbol.set(stock.T, stock.c); // or relevant price field
+        });
+
+        let currentValueStocks = user.stocks.reduce((sum, stock) => {
+          let currentPrice = priceBySymbol.get(stock.symbol) || 0;
+          return sum + (currentPrice * stock.quantity);
+        }, 0);
         let change = currentValueStocks - totalInvestment;
         let profitPerc = (change / totalInvestment) * 100 || 0;
         let name = user.username;
@@ -306,7 +315,7 @@ export const holdings = async (req, res) => {
 export const sellingStockData=async(req,res)=>{
     try{
         const {stockName}=req.params;
-        
+        console.log("just entered".stockName)
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let Stock = user.stocks.filter((stock)=>stock.symbol==stockName);
