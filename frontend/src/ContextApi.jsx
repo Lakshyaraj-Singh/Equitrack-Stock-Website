@@ -1,11 +1,19 @@
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
 
 export const TradingProvider =  ({ children }) => {
    let [isLoading,setIsLoading]=useState(false)
+   const hasLoadedRef = useRef(false);
+   let portfolioInFlight = null;
+  
+   useEffect(() => {
+     if (hasLoadedRef.current) return; // Prevent double calls
+     hasLoadedRef.current = true;
+     loadPortfolio();
+   }, []);
     const [tradingData, setTradingData] = useState({
         name:"",
         balance: 0,
@@ -21,10 +29,15 @@ export const TradingProvider =  ({ children }) => {
 
     const loadPortfolio = async () => {
 
-        try {
+        try { 
             setTradingData(prev => ({ ...prev, loading: true }))
             setIsLoading(true)
-            let res = await portfolio();
+            if (!portfolioInFlight) {
+            portfolioInFlight = portfolio();
+          }
+            
+            const res = await portfolioInFlight;
+            portfolioInFlight = null;
             if (res.status == 200) {
                 setTradingData({
                     name:res.data.name,
@@ -52,11 +65,7 @@ export const TradingProvider =  ({ children }) => {
     }
 
   
-    useEffect(() => {
-        loadPortfolio()
-
-
-    },[])
+  
     
 
     return (

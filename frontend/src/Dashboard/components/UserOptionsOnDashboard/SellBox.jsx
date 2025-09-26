@@ -79,9 +79,9 @@ export const SellBox = ({stock,oncloseModal}) => {
     let change = (stock?.c - stock?.o).toFixed(2);
 
     let percentageChange = ((change / stock?.o) * 100).toFixed(2);
-    let canBuy=userSt.quantity-quantity>=0?true:false
-    let gainL=(quantity*stock.c-userSt.avgBuyPrice*quantity).toFixed(2);
-    let gainLp=(Math.abs(gainL)/userSt.avgBuyPrice*quantity)*100
+    let canBuy=userSt?.quantity-quantity>=0?true:false
+    let gainL=(quantity*stock.c-userSt?.avgBuyPrice*quantity).toFixed(2);
+    let gainLp=(Math.abs(gainL)/userSt?.avgBuyPrice*quantity)*100
   return (
     <> {isLoading&& <LoginLoading message={` Selling ${stock.T}!!`}/>}
     
@@ -112,7 +112,7 @@ export const SellBox = ({stock,oncloseModal}) => {
                    <div className="w-full ">
                     <h1 className="text-xs font-bold">Quantity</h1>
                     <input className="bg-gray-100 w-full pl-2 rounded-md" type="number" min={1} value={quantity}  onChange={handleQuantity}  name="qty" id="qty" />
-                    <p className="text-xs text-gray-700 ">available shares {userSt.quantity-quantity}</p>
+                    <p className="text-xs text-gray-700 ">available shares {userSt?.quantity-quantity>=0?userSt?.quantity-quantity:0}</p>
                     </div> 
                   
                   {/* Full summary per share */}
