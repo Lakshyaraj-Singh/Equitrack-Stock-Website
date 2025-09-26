@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast"
 import { useTrading } from "../../ContextApi"
 import { LoginLoading } from "../../Loading"
 export const HomeDash = () => {
-   let {setIsLoading,isLoading}=useTrading();
+   let {isLoading,setIsLoading,}=useTrading();
   
     
   return (

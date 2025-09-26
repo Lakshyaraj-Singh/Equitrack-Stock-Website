@@ -5,7 +5,11 @@ import { login } from '../../USERAPIS/Uapi';
 import toast from 'react-hot-toast';
 import { useTrading } from '../../ContextApi';
 import { LoginLoading } from '../../Loading';
+import { useState } from 'react';
+
 export const Login = () => {
+  // FIXED: Use local loading state instead of global context loading
+  const [isSubmitting, setIsSubmitting] = useState(false);
   let {setIsLoading,isLoading}=useTrading();
    
   const navigate=useNavigate();
@@ -16,27 +20,25 @@ export const Login = () => {
     },
     validate:loginValidation,
     onSubmit: async(values) => {
-      setIsLoading(true);
+      setIsSubmitting(true);
       console.log('Form submitted:', values);
-      let res=await login(values);
-      if(res.status==200){
-        setTimeout(()=>{
-          setIsLoading(false)
-        },1500)
-        navigate("/dashboard");
-        toast.success("Login Successfull...")
-       
-        console.log(res)
-
-
-      }
-
-      else{
-        setTimeout(()=>{
-          setIsLoading(false);
-        },1500)
-        toast.error("Authentication Problem")
-        console.log(res)
+      
+      try {
+        let res = await login(values);
+        if(res.status == 200){
+          // Navigate immediately - no artificial delay
+          navigate("/dashboard");
+          toast.success("Login Successfull...");
+          console.log(res);
+        } else {
+          toast.error("Authentication Problem");
+          console.log(res);
+        }
+      } catch (error) {
+        toast.error("Network Error");
+        console.error('Login error:', error);
+      } finally {
+        setIsSubmitting(false);
       }
       
     },
@@ -45,7 +47,7 @@ export const Login = () => {
     
   });
   return (<>
-    {isLoading&& <LoginLoading message={"Logging In"}/>}
+    {isSubmitting && <LoginLoading message={"Logging In"}/>}
 
     <div className="flex items-center justify-center bg-sky-100">
       <div className="card w-96 bg-base-100 shadow-xl mt-10 mb-10">

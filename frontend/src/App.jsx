@@ -24,7 +24,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <AppLayout />,
+      element: <TradingProvider><AppLayout /></TradingProvider>,
       errorElement: <h1>Page Not Found</h1>,
       children: ([
         {
@@ -51,11 +51,11 @@ function App() {
         },
         {
           path:"/signup",
-          element:<TradingProvider><Signup /></TradingProvider>
+          element:<Signup />
         },
         {
           path:"/login",
-          element:<TradingProvider><Login /></TradingProvider>
+          element:<Login />
         }
       ])
     },
@@ -94,10 +94,8 @@ function App() {
       ])
     }
   ])
-
+  
   return <RouterProvider router={router}></RouterProvider>
-
-
 }
 
 export default App

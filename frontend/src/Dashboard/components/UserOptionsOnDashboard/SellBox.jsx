@@ -79,9 +79,10 @@ export const SellBox = ({stock,oncloseModal}) => {
     let change = (stock?.c - stock?.o).toFixed(2);
 
     let percentageChange = ((change / stock?.o) * 100).toFixed(2);
-    let canBuy=userSt?.quantity-quantity>=0?true:false
-    let gainL=(quantity*stock.c-userSt?.avgBuyPrice*quantity).toFixed(2);
-    let gainLp=(Math.abs(gainL)/userSt?.avgBuyPrice*quantity)*100
+    let canSell = (userSt?.quantity || 0) - quantity >= 0;
+    let avgPrice = userSt?.avgBuyPrice || 0;
+    let gainL = (quantity * stock.c - avgPrice * quantity).toFixed(2);
+    let gainLp = avgPrice && quantity ? (Math.abs(gainL) / (avgPrice * quantity)) * 100 : 0;
   return (
     <> {isLoading&& <LoginLoading message={` Selling ${stock.T}!!`}/>}
     
@@ -93,7 +94,7 @@ export const SellBox = ({stock,oncloseModal}) => {
                     {/* stock name and symbol */}
                     <div className="flex justify-between rounded-2xl  bg-blue-100 w-full  p-3">
 
-                        <div className=" flex gap-2 flex-col "><h1 className="font-extrabold text-2xl">{stock.T}</h1>  <p className="text-sm text-gray-700">Selling</p> <p className="text-xs text-gray-600">You Own {userSt.quantity} shares @{(userSt.avgBuyPrice)} avg</p></div>
+                        <div className=" flex gap-2 flex-col "><h1 className="font-extrabold text-2xl">{stock.T}</h1>  <p className="text-sm text-gray-700">Selling</p> <p className="text-xs text-gray-600">You Own {userSt?.quantity || 0} shares @{userSt?.avgBuyPrice || 0} avg</p></div>
                         <div className="flex gap-2 flex-col"> <h1 className="font-bold text-2xl">{stock.c}</h1> 
                         {change > 0 ? <p   ><span className="bg-black  px-5 rounded-3xl text-xs text-white font-semibold">{Math.abs(change)}$</span> <span className="text-green-500 font-semibold text-xs">+{percentageChange}%</span></p> : <p ><span className="bg-black font-semibold  px-5 rounded-3xl text-xs text-white">{Math.abs(change)}$</span> <span className="text-red-500 text-xs font-semibold">{percentageChange}%</span></p>}
                         </div>
@@ -112,7 +113,7 @@ export const SellBox = ({stock,oncloseModal}) => {
                    <div className="w-full ">
                     <h1 className="text-xs font-bold">Quantity</h1>
                     <input className="bg-gray-100 w-full pl-2 rounded-md" type="number" min={1} value={quantity}  onChange={handleQuantity}  name="qty" id="qty" />
-                    <p className="text-xs text-gray-700 ">available shares {userSt?.quantity-quantity>=0?userSt?.quantity-quantity:0}</p>
+                    <p className="text-xs text-gray-700 ">available shares {(userSt?.quantity || 0) - quantity >= 0 ? (userSt?.quantity || 0) - quantity : 0}</p>
                     </div> 
                   
                   {/* Full summary per share */}
@@ -124,18 +125,18 @@ export const SellBox = ({stock,oncloseModal}) => {
                     <div className="text-sm flex justify-between"><h1 className="font-bold ">Total Proceeds:</h1> <p className="font-bold">{quantity*stock.c}</p></div>
                     <div className="text-xs font-semibold  flex justify-between"><h1 className="text-gray-500 text-xs">gain/loss</h1>{gainL>0?<p className="text-green-500">+{gainLp}%</p>:<p className="text-red-400">{gainLp}%</p>} </div>
                   </div>
-                  <p className="text-xs font-semibold py-1 px-2  w-full bg-gray-300 rounded-2xl ">Ater sales you will have {userSt.quantity-quantity}</p>
+                  <p className="text-xs font-semibold py-1 px-2  w-full bg-gray-300 rounded-2xl ">After sales you will have {(userSt?.quantity || 0) - quantity}</p>
                   {/* actionbuttons */}
                   <div className="text-xs w-full flex justify-evenly gap-1">
                     <button onClick={()=>{oncloseModal()}} className="p-2 border-[1px] border-gray-400 rounded-lg  w-full">Cancel</button>
-                    {canBuy?
+                    {canSell?
                    
                     <button className="p-2  w-full bg-red-600 text-white rounded-lg font-semibold " onClick={handleBuyStock}>Sell {quantity} Shares</button>
                   : <button className="p-2  w-full bg-red-300 text-white rounded-lg font-semibold  " disabled>Sell {quantity} Shares</button>
                   }
                     
                   </div>
-                  {!canBuy&& <p className="text-xs font-semibold py-1 px-2 bg-gray-200 rounded-2xl ">Dont'have enough shares</p>}
+                  {!canSell&& <p className="text-xs font-semibold py-1 px-2 bg-gray-200 rounded-2xl ">Don't have enough shares</p>}
                 </div>
 
             </div>

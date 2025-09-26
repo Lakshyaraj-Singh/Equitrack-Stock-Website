@@ -5,8 +5,11 @@ import { register } from '../../USERAPIS/Uapi';
 import { useTrading } from '../../ContextApi';
 import { LoginLoading } from '../../Loading';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 export const Signup = () => {
+   // FIXED: Use local loading state instead of global context loading
+   const [isSubmitting, setIsSubmitting] = useState(false);
    let {setIsLoading,isLoading}=useTrading();
   const navigate=useNavigate();
   const formik = useFormik({
@@ -18,25 +21,29 @@ export const Signup = () => {
     validate:SignupValidation,
     onSubmit: async(values) => {
       console.log('Form submitted:', values);
-      setIsLoading(true)
-      let res=await register(values);
-      if(res.status==200){
-        console.log("Hurray!!1")
-        setIsLoading(false)
-        toast.success("Signed In!!")
-        navigate('/login');
-      }
-      else{
-        console.log(res)
-        toast.error("Error Signing In!!")
-        setIsLoading(false)
-
+      setIsSubmitting(true);
+      
+      try {
+        let res = await register(values);
+        if(res.status == 200){
+          console.log("Hurray!!1");
+          toast.success("Signed In!!");
+          navigate('/login');
+        } else {
+          console.log(res);
+          toast.error("Error Signing In!!");
+        }
+      } catch (error) {
+        toast.error("Network Error");
+        console.error('Signup error:', error);
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
 
   return (<>
-    {isLoading && <LoginLoading message={"Signing In"}/>}
+    {isSubmitting && <LoginLoading message={"Signing In"}/>}
     <div className="flex items-center justify-center bg-sky-100">
       <div className="card w-96 bg-base-100 shadow-xl mt-10 mb-10">
         <h1 className="text-center text-2xl mt-2 font-semibold">Signup</h1>

@@ -4,13 +4,16 @@ import { portfolio } from './USERAPIS/StockApi';
 
 const TradingContext = createContext();
 
-export const TradingProvider =  ({ children }) => {
+export const TradingProvider = ({ children }) => {
    let [isLoading,setIsLoading]=useState(false)
    const hasLoadedRef = useRef(false);
-   let portfolioInFlight = null;
+   // FIXED: Use useRef instead of plain variable to persist across re-renders
+   // This prevents duplicate API calls when component re-renders
+   const portfolioInFlightRef = useRef(null);
   
    useEffect(() => {
-     if (hasLoadedRef.current) return; // Prevent double calls
+     // GUARD: Prevent StrictMode double-calls in development
+     if (hasLoadedRef.current) return; 
      hasLoadedRef.current = true;
      loadPortfolio();
    }, []);
@@ -28,39 +31,51 @@ export const TradingProvider =  ({ children }) => {
     });
 
     const loadPortfolio = async () => {
-
         try { 
-            setTradingData(prev => ({ ...prev, loading: true }))
-            setIsLoading(true)
-            if (!portfolioInFlight) {
-            portfolioInFlight = portfolio();
-          }
+            // Set loading states for UI feedback
+            setTradingData(prev => ({ ...prev, loading: true }));
+            setIsLoading(true);
             
-            const res = await portfolioInFlight;
-            portfolioInFlight = null;
-            if (res.status == 200) {
+            // DEDUPLICATION: Only make API call if none is in progress
+            // This prevents multiple concurrent requests to the same endpoint
+            if (!portfolioInFlightRef.current) {
+                portfolioInFlightRef.current = portfolio();
+            }
+            
+            const res = await portfolioInFlightRef.current;
+            
+            // SUCCESS: Update state with portfolio data
+            if (res?.status === 200) {
                 setTradingData({
-                    name:res.data.name,
+                    name: res.data.name,
                     balance: res.data.balance,
                     stocks: res.data.stocks,
                     totalInvestment: res.data.totalInvested,
                     currentValue: res.data.currentValue,
-                    totalProfit:res.data.totalProfit,
-                    change:res.data.change,
-                    loading:false,
-                    error:""
-                })
-               console.log(res)
+                    totalProfit: res.data.totalProfit,
+                    change: res.data.change,
+                    loading: false,
+                    error: ""
+                });
+            } else {
+                // ERROR HANDLING: Set error state for failed requests
+                setTradingData(prev => ({ 
+                    ...prev, 
+                    loading: false, 
+                    error: res?.data?.message || "Error fetching portfolio" 
+                }));
             }
-            setIsLoading(false)
-
-        }
-        catch (error) {
+        } catch (error) {
+            // CATCH: Handle network/parsing errors
             console.log(error);
             setTradingData(prev => ({
                 ...prev, error: error.message, loading: false
-            }))
-            setIsLoading(false)
+            }));
+        } finally {
+            // CLEANUP: Always reset in-flight ref and loading state
+            // This ensures proper cleanup even if errors occur
+            portfolioInFlightRef.current = null;
+            setIsLoading(false);
         }
     }
 
