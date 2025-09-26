@@ -13,6 +13,10 @@ export const SellBox = ({stock,oncloseModal}) => {
     let modalRef=useRef();
     useEffect(() => {
         const loadUsersStockData=async()=>{
+          console.log('Stock symbol:', stock.T);
+    console.log('Stock symbol length:', stock.T.length);
+    console.log('Stock symbol as array:', [...stock.T]);
+    console.log('Stock object:', stock);
           const res=await userStockD(stock.T);
           
          setUserSt(res.data[0])
@@ -22,7 +26,7 @@ export const SellBox = ({stock,oncloseModal}) => {
        
     
       
-    }, []);
+    }, [stock.T]);
 
     useEffect(()=>{
       const handleShares = () => {

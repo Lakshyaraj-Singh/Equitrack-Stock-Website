@@ -20,10 +20,10 @@ export const Login = () => {
       console.log('Form submitted:', values);
       let res=await login(values);
       if(res.status==200){
-        navigate("/dashboard");
         setTimeout(()=>{
           setIsLoading(false)
         },1500)
+        navigate("/dashboard");
         toast.success("Login Successfull...")
        
         console.log(res)

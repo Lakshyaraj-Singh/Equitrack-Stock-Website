@@ -6,6 +6,8 @@ import { useTrading } from "../../ContextApi"
 import { LoginLoading } from "../../Loading"
 export const HomeDash = () => {
    let {setIsLoading,isLoading}=useTrading();
+  
+    
   return (
     <>{isLoading&& <LoginLoading message={` Wait Fetching Information!!`}/>}
     <div>

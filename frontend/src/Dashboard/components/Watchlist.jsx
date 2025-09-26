@@ -53,6 +53,7 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
   let [listActions, setShowListActions] = useState(false)
   let isDown=(stock.c-stock.o>0 ?false:true);
   const detailModalEnabler=async(Stname)=>{
+    
     setDetail({active:true,name:Stname});
   }
   
@@ -82,7 +83,8 @@ const WatchListItem = ({ stock, onClick ,setDetail}) => {
 }
 
 const HoverListAction = ({ uid, stock, onClick }) => {
-  const buy = () => {
+  const buy = (e) => {
+    e.stopPropagation();
     onClick(stock, "buy");
   }
   return (
@@ -100,11 +102,11 @@ const HoverListAction = ({ uid, stock, onClick }) => {
               transition: { timeout: 600 }
             }
             }
-            onClick={buy}
+            
             className="rounded bg-amber-50 cursor-pointer text-black  py-1 px-2"
           >
 
-            <p >Buy</p>
+            <p onClick={buy} >Buy</p>
           </Tooltip>
 
 
@@ -120,10 +122,12 @@ const HoverListAction = ({ uid, stock, onClick }) => {
               transition: { timeout: 600 }
             }}
             className="bg-red-500 p-1  cursor-pointer  rounded "
-          onClick={()=>onClick(stock,"sell")}
+         
           >
 
-            <AssignmentReturnedIcon style={{ width: "50px", height: "30px" }} />
+
+    <AssignmentReturnedIcon onClick={(e)=>{ e.stopPropagation(); onClick(stock,"sell")}}  style={{ width: "50px", height: "30px" }} />
+  
           </Tooltip>
 
           <Tooltip
