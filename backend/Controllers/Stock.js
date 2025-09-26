@@ -234,22 +234,39 @@ export const userPortfolio = async (req, res) => {
         console.log("this is", req.user);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
-        const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+        
+        // PERFORMANCE FIX: Cache the expensive Polygon API call
+        const cacheKey = 'portfolio-stocks-2025-08-28';
+        let responseAll = cache.get(cacheKey);
+        
+        if (!responseAll) {
+            console.log("Fetching fresh data from Polygon API...");
+            responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+            // Cache for 5 minutes (300 seconds) - much shorter than 24 hours
+            cache.set(cacheKey, responseAll, 300);
+        } else {
+            console.log("Using cached Polygon data...");
+        }
+        
         let allStocks = user.stocks;
         let totalInvestment = user.stocks.reduce((sum, stock) => sum + stock.totalInvested, 0);
         let stockNames = allStocks.map(stock => stock.symbol);
+        
+        // PERFORMANCE FIX: Create price map once, use O(1) lookups
         let priceBySymbol = new Map();
         responseAll.results.forEach(stock => {
-          priceBySymbol.set(stock.T, stock.c); // or relevant price field
+          priceBySymbol.set(stock.T, stock.c);
         });
 
         let currentValueStocks = user.stocks.reduce((sum, stock) => {
           let currentPrice = priceBySymbol.get(stock.symbol) || 0;
           return sum + (currentPrice * stock.quantity);
         }, 0);
+        
         let change = currentValueStocks - totalInvestment;
-        let profitPerc = (change / totalInvestment) * 100 || 0;
+        let profitPerc = totalInvestment > 0 ? (change / totalInvestment) * 100 : 0;
         let name = user.username;
+        
         console.log({
             stocks: allStocks, balance: user.balance,
             totalInvested: totalInvestment,
@@ -257,8 +274,8 @@ export const userPortfolio = async (req, res) => {
             totalProfit: profitPerc,
             change: change,
             name: name,
-
         })
+        
         res.status(200).json({
             stocks: allStocks, balance: user.balance,
             totalInvested: totalInvestment,
@@ -266,9 +283,7 @@ export const userPortfolio = async (req, res) => {
             totalProfit: profitPerc,
             change: change,
             name: name,
-
         })
-
 
     }
     catch (error) {
