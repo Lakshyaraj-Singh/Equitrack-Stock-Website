@@ -299,22 +299,30 @@ export const holdings = async (req, res) => {
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let allStocks = user.stocks;
+        console.log("holdings entered")
         const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
-        let stockToSee = allStocks.map((stocks) => { stocks.symbol })
+        let stockToSee = allStocks.map((stocks) => stocks.symbol )
         const response = responseAll.results.filter(stock => stockToSee.includes(stock.T));
-
+         console.log(response,"HOLDINGS")
         let holdingsData = [];
-        for (let i = 0; i < stockToSee.length; i++) {
-            holdingsData.push({
-                symbol: allStocks[i].symbol,
-                avgPrice: allStocks[i].avgBuyPrice,
-                quantity: allStocks[i].quantity,
-                currValue: response[i].c * quantity,
-                change: currValue - avgPrice * quantity,
-                isProfit: change > 0 ? true : false
-
-            })
+        for (let i = 0; i < allStocks.length; i++) { 
+            // Find matching stock data
+            const stockData = response.find(stock => stock.T === allStocks[i].symbol);
+            
+            if (stockData) {
+                const currValue = stockData.c * allStocks[i].quantity;
+                const change = currValue - (allStocks[i].avgBuyPrice * allStocks[i].quantity);
+                
+                holdingsData.push({
+                    symbol: allStocks[i].symbol,
+                    avgPrice: allStocks[i].avgBuyPrice,
+                    quantity: allStocks[i].quantity,
+                    currValue: currValue,
+                    change: change,
+                    isProfit: change > 0
+                });
+            }
         }
         return res.status(200).json(holdingsData)
 
