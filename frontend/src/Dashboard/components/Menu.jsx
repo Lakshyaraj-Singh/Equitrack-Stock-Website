@@ -4,10 +4,12 @@ import { logout } from "../../USERAPIS/Uapi"
 export const Menu = () => {
     const navLinks=(<>
      <li><Link to="/dashboard" >Dashboard</Link></li>
-     <li><Link to="/dashboard/orders" >Orders</Link></li>
+
      <li><Link to="/dashboard/holdings" >Holdings</Link></li>
      <li><Link to="/dashboard/positions" >Positions</Link></li>
+     <li><Link to="/dashboard/orders" >Orders</Link></li>
      <li><Link to="/dashboard/funds" >Funds</Link></li>
+
      <li className="bg-red-500"><Link to={"/login"} onClick={()=>{logout();}} >Logout</Link></li>
             
     </>)      

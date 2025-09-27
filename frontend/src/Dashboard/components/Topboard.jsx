@@ -8,12 +8,12 @@ export const Topboard = () => {
                  <div className="left w-3/7 z-1 shadow-[0.5px_0px_4px_rgba(0,0,0,0.1)]  shadow-sky-950  bg-accent-content text-white">
                  <div className="topl flex text-xs py-4 px-7 bg-amber-600 justify-evenly items-center">
                     <div className="w-fit flex space-x-3  ">
-                        <p className="font-medium">NIFTY 50</p>
-                        <p>100.24</p>
+                        <p className="font-medium">S&P 500 </p>
+                        
                     </div>
                     <div className=" flex space-x-3">
-                        <p className="font-medium">SENSEX</p>
-                        <p>100.2</p>
+                        <p className="font-medium">NASDAQ</p>
+                       
                     </div>
                 </div>
                 <div className="bottl flex items-center p-3 gap-4 ">
@@ -22,7 +22,7 @@ export const Topboard = () => {
                         <input type="search" className="grow " placeholder="Search eg: Infy, BSE, NIFTY FUT Weekly, Gold MCX" />
 
                     </label>
-                    <p className="text-sm text-gray-200">{watchlist.length}/50</p>
+                    <p className="text-sm text-gray-200">50</p>
                 </div>
                  </div>
                  <div className="rightmenu w-2/3 ">
