@@ -11,13 +11,19 @@ const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
 
 // controller to give all thse stocks on dashboard
 export const AllStocksSummary = async (req, res) => {
-    try {
-        const cacheKey = 'stocks-2025-08-28';
+    try {const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
+        const cacheKey = `stocks-${dateToUse}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) {
             return res.status(200).json(cachedData);
         }
-        const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+        const responseAll = await rest.getGroupedStocksAggregates(dateToUse);
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
         let stockToSee = ["PLTR", "GEV", "TPR", "VST", "AXON", "UAL", "JBL", "AVGO", "DASH", "NRG", "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "ORCL", "RCL", "CCL", "CRWD", "COIN", "AMD", "ANET", "WDC", "BRKB", "DIS", "JPM", "V", "MA", "JNJ", "PG", "KO", "PFE", "XOM", "CVX", "HD", "WMT", "UNH", "BAC", "INTC", "CRM", "ADBE", "PYPL", "UBER", "CEG", "APH", "HWM", "MU"]
 
@@ -61,10 +67,17 @@ async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000
 // controller to give all the information of a particular stock on dashboard
 export const particularDetailStock = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
         let { stockName } = req.body;
-        const cacheKey = `particular-${stockName}2025-08-28`;
+        const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
-        const cacheKey2 = `particular-${stockName}-des2025-08-28`;
+        const cacheKey2 = `particular-${stockName}-des${dateToUse}`;
         let cachedData2 = cache.get(cacheKey2);
         const cacheKey3 = `particular-${stockName}-dividend`;
         let cachedData3 = cache.get(cacheKey3);
@@ -74,7 +87,7 @@ export const particularDetailStock = async (req, res) => {
 
 
         const [response, response2, response3, financiall] = await Promise.all([
-            fetchWithBackoff(() => rest.getStocksOpenClose(stockName, "2025-08-28", { adjusted: true })),
+            fetchWithBackoff(() => rest.getStocksOpenClose(stockName, dateToUse, { adjusted: true })),
             fetchWithBackoff(() => rest.getTicker(stockName)),
             fetchWithBackoff(() => rest.listDividends(stockName)),
             fetchWithBackoff(() => rest.listFinancials(stockName))
@@ -96,12 +109,19 @@ export const particularDetailStock = async (req, res) => {
 // controller to give all inform of month of a stock chart creation on dashboard
 export const chartMonth = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
         let { stockName } = req.body;
         console.log("coming ChartMonth",stockName)
         const cacheKey = `particular-${stockName}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) return res.status(200).json(cachedData)
-        const response = await rest.getStocksAggregates(stockName, 1, "day", "2024-08-01", "2025-09-09");
+        const response = await rest.getStocksAggregates(stockName, 1, "day", "2024-08-01", dateToUse);
         cache.set(cacheKey, response);
         return res.status(200).json(response);
 
@@ -116,11 +136,18 @@ export const chartMonth = async (req, res) => {
 
 export const particularStock = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
         let { stockName } = req.body;
-        const cacheKey = `particular-${stockName}2025-08-28`;
+        const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) return res.status(200).json(cachedData);
-        const response = await rest.getStocksOpenClose(stockName, "2025-08-28", { adjusted: true });
+        const response = await rest.getStocksOpenClose(stockName, dateToUse, { adjusted: true });
         cache.set(cacheKey, response);
         return res.status(200).json(response);
     }
@@ -231,17 +258,24 @@ export const sellingStock = async (req, res) => {
 
 export const userPortfolio = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
         console.log("this is", req.user);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         
         // PERFORMANCE FIX: Cache the expensive Polygon API call
-        const cacheKey = 'portfolio-stocks-2025-08-28';
+        const cacheKey = `portfolio-stocks-${dateToUse}`;
         let responseAll = cache.get(cacheKey);
         
         if (!responseAll) {
             console.log("Fetching fresh data from Polygon API...");
-            responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+            responseAll = await rest.getGroupedStocksAggregates(dateToUse);
             // Cache for 5 minutes (300 seconds) - much shorter than 24 hours
             cache.set(cacheKey, responseAll, 300);
         } else {
@@ -296,11 +330,25 @@ export const userPortfolio = async (req, res) => {
 
 export const holdings = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-09-24"
+        }
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let allStocks = user.stocks;
         console.log("holdings entered")
-        const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+        let cacheKey = `holdingsport-stocks-${dateToUse}`;
+        let cachedData = cache.get(cacheKey);
+        let responseAll=cachedData;
+        if(!cachedData){
+            
+            responseAll = await rest.getGroupedStocksAggregates(dateToUse);
+            cache.set(cacheKey,responseAll)
+        }
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
         let stockToSee = allStocks.map((stocks) => stocks.symbol )
         const response = responseAll.results.filter(stock => stockToSee.includes(stock.T));
