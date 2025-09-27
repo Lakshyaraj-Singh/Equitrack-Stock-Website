@@ -10,7 +10,7 @@ import { useState } from 'react';
 export const Signup = () => {
    // FIXED: Use local loading state instead of global context loading
    const [isSubmitting, setIsSubmitting] = useState(false);
-   let {setIsLoading,isLoading}=useTrading();
+
   const navigate=useNavigate();
   const formik = useFormik({
     initialValues: {

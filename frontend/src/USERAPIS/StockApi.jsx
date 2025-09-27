@@ -65,7 +65,7 @@ export const sellingStocksAction = async (data) => {
     }
 }
 
-export const holdingsUser=async (data) => {
+export const holdingsUser=async () => {
     let token=localStorage.getItem("token")
     
    try {

@@ -10,7 +10,7 @@ import { useState } from 'react';
 export const Login = () => {
   // FIXED: Use local loading state instead of global context loading
   const [isSubmitting, setIsSubmitting] = useState(false);
-  let {setIsLoading,isLoading}=useTrading();
+ 
    
   const navigate=useNavigate();
   const formik = useFormik({
@@ -25,8 +25,9 @@ export const Login = () => {
       
       try {
         let res = await login(values);
-        if(res.status == 200){
-          // Navigate immediately - no artificial delay
+      
+        if(res.status === 200){
+          
           navigate("/dashboard");
           toast.success("Login Successfull...");
           console.log(res);

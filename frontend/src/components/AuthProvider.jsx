@@ -1,23 +1,20 @@
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
-    // If no token and trying to access dashboard, redirect to login
-    if (!token && location.pathname === '/dashboard') {
-      navigate('/login');
+    if (!token) {
+      window.location.href = '/login';
     }
-    
-    // If token exists and on login page, redirect to dashboard
-    if (token && location.pathname === '/login') {
-      navigate('/dashboard');
-    }
-  }, [location.pathname, navigate]);
+  }, []);
 
-  return children;
+  return (
+    <AuthContext.Provider value={{}}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

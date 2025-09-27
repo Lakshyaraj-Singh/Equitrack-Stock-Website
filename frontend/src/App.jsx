@@ -26,7 +26,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <TradingProvider><AppLayout /></TradingProvider>,
+      element: <AppLayout />,
       errorElement: <h1>Page Not Found</h1>,
       children: ([
         {
@@ -66,9 +66,9 @@ function App() {
       element:<TradingProvider><HomeDash/></TradingProvider>,
       children:([
         { path:"",
-          element:<Dashboard/>,
+          element:<AuthProvider><Dashboard/></AuthProvider>,
           loader:Getwatchlist,
-          children:([
+          children:([ 
             {
               index:true,
            
@@ -98,9 +98,9 @@ function App() {
   ])
   
   return (
-    <AuthProvider>
+  
       <RouterProvider router={router}></RouterProvider>
-    </AuthProvider>
+   
   )
 }
 
