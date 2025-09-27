@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import { useNavigate } from "react-router-dom";
 
 const api=axios.create({
     baseURL:"http://localhost:3000/api/user"
@@ -25,4 +25,15 @@ try{
 catch(error){
     return error
 }
+}
+export const logout=()=>{
+    try{
+     let navigate=useNavigate();
+     localStorage.removeItem("token")
+     navigate("/login")
+
+    }
+    catch(error){
+        return error
+    }
 }

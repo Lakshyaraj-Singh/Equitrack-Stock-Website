@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { logout } from "../../USERAPIS/Uapi"
 
 export const Menu = () => {
     const navLinks=(<>
@@ -7,9 +8,9 @@ export const Menu = () => {
      <li><Link to="/dashboard/holdings" >Holdings</Link></li>
      <li><Link to="/dashboard/positions" >Positions</Link></li>
      <li><Link to="/dashboard/funds" >Funds</Link></li>
-     <li className="bg-"><Link to="/logout" >Logout</Link></li>
+     <li className="bg-red-500"><Link onClick={()=>{logout()}} >Logout</Link></li>
         
-    </>)
+    </>)      
   return (
     <div className="">
         <div className="navbar h-25 mt-3 bg-base-100 shadow-sm border-b-1">
