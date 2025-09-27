@@ -44,7 +44,7 @@ export const Summary = () => {
                
                 <div className="text-gray-600 flex flex-col justify-between  items-left">
                     <p>Margin Used : <span className="font-medium text-black">${marginUsed}</span></p>
-                    <p>Total Profit: <span className={`font-medium ${tradingData.change>0? 'text-green-500':'text-red-500'}`}>{tradingData.change>0?"+":""}${formatNumber(Math.abs(tradingData.change))}</span></p>
+                    <p>Total Profit: <span className={`font-medium ${tradingData.change>0? 'text-green-500':'text-red-500'}`}>{tradingData.change>0?"+":""}${formatNumber(Math.abs(tradingData.change).toFixed(2))}</span></p>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@ export const Summary = () => {
             <h1 className="text-3xl font-thin">Holdings ({tradingData.stocks?tradingData.stocks.length:0})</h1>
             {tradingData.stocks && tradingData.stocks.length > 0 ? (
                     <div className="mt-3 text-sm text-gray-600">
-                        <p>Total Investment: ${(tradingData.totalInvestment)}K</p>
+                        <p>Total Investment: ${formatNumber(tradingData.totalInvestment)}</p>
                         <p>Total Stocks: {tradingData.stocks.length} different companies</p>
                     </div>
                 ) : (

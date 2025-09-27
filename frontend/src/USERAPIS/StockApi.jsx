@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/stk"
+    baseURL: "/api/stk"
 })
 // get("/allStocks",stock.AllStocksSummary)
 // post("/paricularStock",stock.particularStock)
