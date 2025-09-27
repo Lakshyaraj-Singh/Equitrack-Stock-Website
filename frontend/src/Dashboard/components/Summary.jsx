@@ -15,7 +15,7 @@ export const Summary = () => {
           return (num / 1000000).toFixed(1) + 'M';
         }
         if (num >= 1000) {
-          return (num / 1000).toFixed(3) + 'K';
+          return (num / 1000).toFixed(1) + 'K';
         }
         return num;
       }
@@ -43,7 +43,7 @@ export const Summary = () => {
                 </div>
                
                 <div className="text-gray-600 flex flex-col justify-between  items-left">
-                    <p>Margin Used : <span className="font-medium text-black">${marginUsed}K</span></p>
+                    <p>Margin Used : <span className="font-medium text-black">${marginUsed}</span></p>
                     <p>Total Profit: <span className={`font-medium ${tradingData.change>0? 'text-green-500':'text-red-500'}`}>{tradingData.change>0?"+":""}${formatNumber(Math.abs(tradingData.change))}</span></p>
                 </div>
             </div>

@@ -10,13 +10,13 @@ import { RevealFade } from '../Framer'
 export const Home = () => {
   return (<>
     <div className='mt-20 '>
-    <RevealFade duration={1.2}>
+    <RevealFade delay={2} duration={1.2}>
 
     <HeroImg/>
     
     <CallAction />
     </RevealFade>
-    <RevealFade duration={1}><Trust/></RevealFade>
+    <RevealFade  duration={1}><Trust/></RevealFade>
   
     <Learn/>
     
