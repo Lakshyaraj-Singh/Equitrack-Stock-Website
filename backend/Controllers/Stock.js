@@ -296,11 +296,26 @@ export const userPortfolio = async (req, res) => {
 
 export const holdings = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        let getDay=currentDate.getDay();
+        let dateToUse = formattedDate;
+        if(getDay==0 ||getDay==6){
+            dateToUse="2025-08-28"
+        }
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let allStocks = user.stocks;
         console.log("holdings entered")
-        const responseAll = await rest.getGroupedStocksAggregates("2025-08-28");
+        let cacheKey = `holdingsport-stocks-${dateToUse}`;
+        let cachedData = cache.get(cacheKey);
+        let responseAll=cachedData;
+        if(!cachedData){
+            
+            responseAll = await rest.getGroupedStocksAggregates(dateToUse);
+            cache.set(cacheKey,responseAll)
+        }
+
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
         let stockToSee = allStocks.map((stocks) => stocks.symbol )
         const response = responseAll.results.filter(stock => stockToSee.includes(stock.T));
