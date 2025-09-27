@@ -20,6 +20,8 @@ import{Holdings} from "./Dashboard/components/Holdings";
 import{Funds} from "./Dashboard/components/Funds";
 import { Orders } from "./Dashboard/components/Orders";
 import { TradingProvider } from "./ContextApi";
+import { AuthProvider } from "./components/AuthProvider";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -95,7 +97,11 @@ function App() {
     }
   ])
   
-  return <RouterProvider router={router}></RouterProvider>
+  return (
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
+  )
 }
 
 export default App
