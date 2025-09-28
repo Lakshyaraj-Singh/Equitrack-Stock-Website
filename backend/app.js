@@ -23,7 +23,11 @@ app.use(bodyParser.urlencoded());
 
 // Test endpoint
 app.get("/api/test", (req, res) => {
-  res.json({ message: "Backend is working!", timestamp: new Date().toISOString() });
+  res.json({ 
+    message: "Backend is working!", 
+    timestamp: new Date().toISOString(),
+    mongoUrl: process.env.MONGO ? "MongoDB URL is set" : "MongoDB URL is NOT set"
+  });
 });
 
 //Defining Routes
