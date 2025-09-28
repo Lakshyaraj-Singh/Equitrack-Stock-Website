@@ -2,7 +2,9 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom";
 
 const api=axios.create({
-    baseURL:"/api/user"
+    baseURL: process.env.NODE_ENV === 'production' 
+        ? "https://your-backend.vercel.app/api/user" 
+        : "/api/user"
 })
 
 

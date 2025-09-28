@@ -9,7 +9,9 @@ import stockRouter from "./Routes/Stock.js"
 const app=express();    
 dotenv.config();
 const corsOptions = {
-    origin:"*",
+    origin: process.env.NODE_ENV === 'production' 
+        ? ["https://your-frontend.vercel.app", "https://your-app.vercel.app"]
+        : ["http://localhost:3000", "http://localhost:5173"],
     credentials: true,
   };
 app.use(cors(corsOptions));
@@ -18,6 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded()); 
 
 
+
+// Test endpoint
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working!", timestamp: new Date().toISOString() });
+});
 
 //Defining Routes
 app.use("/api/user",userRouter)

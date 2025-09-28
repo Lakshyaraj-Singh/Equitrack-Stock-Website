@@ -35,7 +35,7 @@ export const loginUser=async(req,res)=>{
       let token=jwt.sign({
        userId:checkIfUser._id,
        email:checkIfUser.email
-      },process.env.JWT_SECRET,{expiresIn:"24h"});
+      },process.env.JWT_SECRET || 'fallback-secret-key',{expiresIn:"24h"});
       
       return res.status(200).json({message:"Succesfully User Logged In",token})
    }

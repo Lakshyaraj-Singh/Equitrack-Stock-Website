@@ -3,7 +3,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "/api/stk"
+    baseURL: process.env.NODE_ENV === 'production' 
+        ? "https://your-backend.vercel.app/api/stk" 
+        : "/api/stk"
 })
 // get("/allStocks",stock.AllStocksSummary)
 // post("/paricularStock",stock.particularStock)
