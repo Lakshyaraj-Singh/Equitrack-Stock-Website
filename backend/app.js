@@ -10,7 +10,7 @@ const app=express();
 dotenv.config();
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production' 
-        ? ["https://your-frontend.vercel.app", "https://your-app.vercel.app"]
+        ? ["https://equitrackstockwebsite-lakshyarajpro.vercel.app",]
         : ["http://localhost:3000", "http://localhost:5173"],
     credentials: true,
   };
