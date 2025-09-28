@@ -1,11 +1,11 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": { 
-        "distDir": "dist",
-        "outputDirectory": "dist"
+        "distDir": "dist"
       }
     },
     {
@@ -16,15 +16,18 @@
   "routes": [
     {
       "src": "/api/user/(.*)",
-      "dest": "backend/app.js"
+      "dest": "/backend/app.js"
     },
     {
       "src": "/api/stk/(.*)", 
-      "dest": "backend/app.js"
+      "dest": "/backend/app.js"
     },
     {
       "src": "/(.*)",
-      "dest": "frontend/dist/index.html"
+      "dest": "/frontend/dist/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

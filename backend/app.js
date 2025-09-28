@@ -36,9 +36,15 @@ const main = async (url) => {
 
 main(url);
 
-app.listen(PORT, () => {
-  console.log(`Listening to ${PORT}`);
-});
+// Only start server if not in Vercel environment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Listening to ${PORT}`);
+  });
+}
+
+// Export app for Vercel
+export default app;
 
 
 
