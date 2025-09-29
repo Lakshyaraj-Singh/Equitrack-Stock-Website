@@ -10,7 +10,7 @@ import { RevealFade } from '../Framer'
 export const Home = () => {
   return (<>
     <div className='mt-20 '>
-    <RevealFade delay={2} duration={1.2}>
+    <RevealFade delay={1.5} duration={1.2}>
 
     <HeroImg/>
     

@@ -1,6 +1,7 @@
 import React from 'react'
 import { CallAction } from '../CallAction'
 import { Fade } from '../Framer'
+import videoSrc from '../../assets/21117-315137086_small.mp4'
 
 export const Video = () => {
   return (
