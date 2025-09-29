@@ -13,18 +13,18 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/user/(.*)",
-      "dest": "/backend/app.js"
+      "source": "/api/user/(.*)",
+      "destination": "/backend/app.js"
     },
     {
-      "src": "/api/stk/(.*)", 
-      "dest": "/backend/app.js"
+      "source": "/api/stk/(.*)", 
+      "destination": "/backend/app.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/frontend/dist/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/frontend/dist/index.html"
     }
   ],
   "env": {
