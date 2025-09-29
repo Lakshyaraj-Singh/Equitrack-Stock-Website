@@ -1,5 +1,0 @@
-# Handle client-side routing
-/*    /index.html   200
-
-# Handle static assets
-/assets/*    /assets/:splat    200

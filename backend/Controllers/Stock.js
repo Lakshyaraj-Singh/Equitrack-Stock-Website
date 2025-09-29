@@ -12,6 +12,7 @@ const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
 // controller to give all thse stocks on dashboard
 export const AllStocksSummary = async (req, res) => {
     try {const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
@@ -68,6 +69,7 @@ async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000
 export const particularDetailStock = async (req, res) => {
     try {
         const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
@@ -110,6 +112,7 @@ export const particularDetailStock = async (req, res) => {
 export const chartMonth = async (req, res) => {
     try {
         const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
@@ -137,6 +140,7 @@ export const chartMonth = async (req, res) => {
 export const particularStock = async (req, res) => {
     try {
         const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
@@ -259,6 +263,7 @@ export const sellingStock = async (req, res) => {
 export const userPortfolio = async (req, res) => {
     try {
         const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
@@ -331,6 +336,7 @@ export const userPortfolio = async (req, res) => {
 export const holdings = async (req, res) => {
     try {
         const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
         const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
         let getDay=currentDate.getDay();
         let dateToUse = formattedDate;
