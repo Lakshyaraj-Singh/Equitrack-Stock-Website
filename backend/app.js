@@ -9,12 +9,14 @@ import stockRouter from "./Routes/Stock.js"
 const app=express();    
 dotenv.config();
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' 
-        ? ["https://equitrackstockwebsite-lakshyarajpro.vercel.app",]
-        : ["http://localhost:3000", "http://localhost:5173"],
-    credentials: true,
-  };
+  origin: "https://equitrackstockwebsite-lakshyarajpro.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use(bodyParser.urlencoded()); 
