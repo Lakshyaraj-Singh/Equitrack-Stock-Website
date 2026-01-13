@@ -3,11 +3,12 @@ import NodeCache from 'node-cache';
 const cache = new NodeCache({ stdTTL: 86400 });
 import dotenv from 'dotenv';
 dotenv.config();
-import { restClient } from '@polygon.io/client-js';
+//import { restClient } from '@polygon.io/client-js';
+import { restClient } from '@massive.com/client-js';
 import { User } from '../Models/User.js';
 
-const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
-
+//const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
+onst rest = restClient(process.env.POLY_API_KEY, 'https://api.massive.com');
 
 // controller to give all thse stocks on dashboard
 export const AllStocksSummary = async (req, res) => {
