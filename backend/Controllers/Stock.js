@@ -10,21 +10,29 @@ import { User } from '../Models/User.js';
 const rest = restClient(process.env.POLY_API_KEY, 'https://api.polygon.io');
 //const rest = restClient(process.env.POLY_API_KEY, 'https://api.massive.com');
 
+const dateWorking=()=>{
+    const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 2);
+    
+     
+        
+        while(currentDate.getDay()==0 ||currentDate.getDay()==6){
+           currentDate.setDate(currentDate.getDate() - 1);
+        }
+     const formattedDate = currentDate.toISOString().split('T')[0];  // YYYY-MM-DD format
+    return formattedDate ;
+      
+    
+}
 // controller to give all thse stocks on dashboard
 export const AllStocksSummary = async (req, res) => {
-    try {const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+    try {const datetouse= dateworking();
         const cacheKey = `stocks-${dateToUse}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) {
             return res.status(200).json(cachedData);
         }
+         console.log(formattedDate);
         const responseAll = await rest.getGroupedStocksAggregates(dateToUse);
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
         let stockToSee = ["PLTR", "GEV", "TPR", "VST", "AXON", "UAL", "JBL", "AVGO", "DASH", "NRG", "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "ORCL", "RCL", "CCL", "CRWD", "COIN", "AMD", "ANET", "WDC", "BRKB", "DIS", "JPM", "V", "MA", "JNJ", "PG", "KO", "PFE", "XOM", "CVX", "HD", "WMT", "UNH", "BAC", "INTC", "CRM", "ADBE", "PYPL", "UBER", "CEG", "APH", "HWM", "MU"]
@@ -69,14 +77,7 @@ async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000
 // controller to give all the information of a particular stock on dashboard
 export const particularDetailStock = async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+        const datetouse= dateworking();
         let { stockName } = req.body;
         const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
@@ -112,14 +113,7 @@ export const particularDetailStock = async (req, res) => {
 // controller to give all inform of month of a stock chart creation on dashboard
 export const chartMonth = async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+       const datetouse= dateworking();
         let { stockName } = req.body;
         console.log("coming ChartMonth",stockName)
         const cacheKey = `particular-${stockName}`;
@@ -140,14 +134,7 @@ export const chartMonth = async (req, res) => {
 
 export const particularStock = async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+         const datetouse= dateworking();
         let { stockName } = req.body;
         const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
@@ -263,14 +250,7 @@ export const sellingStock = async (req, res) => {
 
 export const userPortfolio = async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+         const datetouse= dateworking();
         console.log("this is", req.user);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
@@ -336,14 +316,7 @@ export const userPortfolio = async (req, res) => {
 
 export const holdings = async (req, res) => {
     try {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 1);
-        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-        let getDay=currentDate.getDay();
-        let dateToUse = formattedDate;
-        if(getDay==0 ||getDay==6){
-            dateToUse="2025-09-24"
-        }
+         const datetouse= dateworking();
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let allStocks = user.stocks;
