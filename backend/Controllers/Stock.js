@@ -26,7 +26,7 @@ const dateWorking=()=>{
 }
 // controller to give all thse stocks on dashboard
 export const AllStocksSummary = async (req, res) => {
-    try {const datetouse= dateworking();
+    try {const dateToUse = dateWorking();
         const cacheKey = `stocks-${dateToUse}`;
         let cachedData = cache.get(cacheKey);
         if (cachedData) {
@@ -77,7 +77,7 @@ async function fetchWithBackoff(fetchFunction, maxRetries = 5, retryDelay = 1000
 // controller to give all the information of a particular stock on dashboard
 export const particularDetailStock = async (req, res) => {
     try {
-        const datetouse= dateworking();
+        const dateToUse = dateWorking();
         let { stockName } = req.body;
         const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
@@ -113,7 +113,7 @@ export const particularDetailStock = async (req, res) => {
 // controller to give all inform of month of a stock chart creation on dashboard
 export const chartMonth = async (req, res) => {
     try {
-       const datetouse= dateworking();
+     const dateToUse = dateWorking();
         let { stockName } = req.body;
         console.log("coming ChartMonth",stockName)
         const cacheKey = `particular-${stockName}`;
@@ -134,7 +134,7 @@ export const chartMonth = async (req, res) => {
 
 export const particularStock = async (req, res) => {
     try {
-         const datetouse= dateworking();
+        const dateToUse = dateWorking();
         let { stockName } = req.body;
         const cacheKey = `particular-${stockName}${dateToUse}`;
         let cachedData = cache.get(cacheKey);
@@ -250,7 +250,7 @@ export const sellingStock = async (req, res) => {
 
 export const userPortfolio = async (req, res) => {
     try {
-         const datetouse= dateworking();
+         const dateToUse = dateWorking();
         console.log("this is", req.user);
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
@@ -316,7 +316,7 @@ export const userPortfolio = async (req, res) => {
 
 export const holdings = async (req, res) => {
     try {
-         const datetouse= dateworking();
+         const dateToUse = dateWorking();
         let user = await User.findById(req.user);
         if (!user) return res.status(404).json({ message: "User Not Found" });
         let allStocks = user.stocks;
