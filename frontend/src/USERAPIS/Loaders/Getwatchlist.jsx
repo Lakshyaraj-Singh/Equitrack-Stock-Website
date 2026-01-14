@@ -2,6 +2,7 @@ import { dashBoardAllStock } from "../StockApi"
 
 export const Getwatchlist=async()=>{
     let res=await dashBoardAllStock();
+    
     return res;
 }
 

@@ -32,7 +32,7 @@ export const AllStocksSummary = async (req, res) => {
         if (cachedData) {
             return res.status(200).json(cachedData);
         }
-         console.log(formattedDate);
+         
         const responseAll = await rest.getGroupedStocksAggregates(dateToUse);
         if (!responseAll) return res.status(404).json({ message: "Must Be Some Date Issue " })
         let stockToSee = ["PLTR", "GEV", "TPR", "VST", "AXON", "UAL", "JBL", "AVGO", "DASH", "NRG", "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "ORCL", "RCL", "CCL", "CRWD", "COIN", "AMD", "ANET", "WDC", "BRKB", "DIS", "JPM", "V", "MA", "JNJ", "PG", "KO", "PFE", "XOM", "CVX", "HD", "WMT", "UNH", "BAC", "INTC", "CRM", "ADBE", "PYPL", "UBER", "CEG", "APH", "HWM", "MU"]

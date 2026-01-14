@@ -5,7 +5,7 @@ import axios from 'axios';
 const api = axios.create({
     baseURL: process.env.NODE_ENV === 'production' 
         ? "https://equitrackstock-backend-server.vercel.app/api/stk" 
-        : "/api/stk"
+        : "http://localhost:3000/api/stk"
 })
 // get("/allStocks",stock.AllStocksSummary)
 // post("/paricularStock",stock.particularStock)
@@ -17,7 +17,9 @@ export const dashBoardAllStock = async () => {
         return res;
     }
     catch (error) {
-        return error.response
+        const message = error.response?.data?.error || error.message;
+        console.error(message);
+        return message;
     }
 }
 
